@@ -1,92 +1,49 @@
+import { cardClass, statusBadgeClasses, statusDotClasses, statusSegmentClasses } from '../classes.js'
 import { statuses, statusClass } from '../data.js'
 import { CalendarIcon, CheckIcon, ClockIcon, ListIcon } from '../icons.jsx'
 
-const cardStyles = {
-  total: {
-    card: 'border-[#E7DFD0] bg-[#D8C6A5]',
-    icon: 'bg-white/70 text-[#073B23]',
-    value: 'text-[#073B23]',
-    label: 'text-[#073B23]',
-    description: 'text-[#0A4B2D]',
-  },
-  pending: {
-    card: 'border-[#E7DFD0] bg-[#EDE8D0]',
-    icon: 'bg-white/70 text-[#0A4B2D]',
-    value: 'text-[#073B23]',
-    label: 'text-[#073B23]',
-    description: 'text-[#0A4B2D]',
-  },
-  processing: {
-    card: 'border-[#E7DFD0] bg-[#D8C6A5]',
-    icon: 'bg-white/70 text-[#073B23]',
-    value: 'text-[#073B23]',
-    label: 'text-[#073B23]',
-    description: 'text-[#0A4B2D]',
-  },
-  completed: {
-    card: 'border-[#E7DFD0] bg-[#EDE8D0]',
-    icon: 'bg-white/70 text-[#0A4B2D]',
-    value: 'text-[#073B23]',
-    label: 'text-[#073B23]',
-    description: 'text-[#0A4B2D]',
-  },
-}
-
-const segmentClasses = {
-  pending: 'bg-[#C76E00]',
-  processing: 'bg-[#3B82F6]',
-  completed: 'bg-[#8B5CF6]',
-  rejected: 'bg-[#EF4444]',
-}
-
-const dotClasses = {
-  pending: 'bg-[#C76E00]',
-  processing: 'bg-[#3B82F6]',
-  completed: 'bg-[#8B5CF6]',
-  rejected: 'bg-[#EF4444]',
-}
-
-const badgeClasses = {
-  pending: 'bg-[#FFF7ED] text-[#C76E00]',
-  processing: 'bg-[#EFF6FF] text-[#1D4ED8]',
-  completed: 'bg-[#F5F3FF] text-[#6D28D9]',
-  rejected: 'bg-[#FEF2F2] text-[#B91C1C]',
-}
-
-function DashboardOverview({ requests }) {
+function DashboardOverview({ requests, onNavigate = () => {} }) {
   const statusCounts = statuses.reduce((counts, status) => {
     counts[status] = requests.filter((request) => request.status === status).length
     return counts
   }, {})
 
   const total = requests.length
-  const summaryCards = [
+  const statCards = [
     {
+      key: 'total',
       title: 'Total Requests',
       count: total,
       description: 'All submitted requests',
-      tone: 'total',
+      bg: 'bg-[#073B23]',
+      hoverRing: 'hover:ring-2 hover:ring-[#073B23]/30',
       Icon: CalendarIcon,
     },
     {
+      key: 'pending',
       title: 'Pending Requests',
       count: statusCounts.Pending,
       description: 'Awaiting review',
-      tone: 'pending',
+      bg: 'bg-[#8A7344]',
+      hoverRing: 'hover:ring-2 hover:ring-[#8A7344]/30',
       Icon: ClockIcon,
     },
     {
+      key: 'processing',
       title: 'Processing Requests',
       count: statusCounts.Processing,
       description: 'Currently in progress',
-      tone: 'processing',
+      bg: 'bg-[#0A4B2D]',
+      hoverRing: 'hover:ring-2 hover:ring-[#0A4B2D]/30',
       Icon: ListIcon,
     },
     {
+      key: 'completed',
       title: 'Completed Requests',
       count: statusCounts.Completed,
       description: 'Successfully completed',
-      tone: 'completed',
+      bg: 'bg-[#042916]',
+      hoverRing: 'hover:ring-2 hover:ring-[#042916]/30',
       Icon: CheckIcon,
     },
   ]
@@ -94,141 +51,117 @@ function DashboardOverview({ requests }) {
   const trackedRequests = [...requests].sort((a, b) => new Date(b.date) - new Date(a.date))
 
   return (
-    <div className="space-y-5">
-      <section aria-labelledby="sd-summary-title">
-        <div className="mb-3 flex items-end justify-between gap-4">
-          <div>
-            <p className="text-[10px] font-bold tracking-[1.4px] text-[#0A4B2D] uppercase">
-              Student Overview
-            </p>
-            <h2 id="sd-summary-title" className="mt-1 text-[16px] font-extrabold text-[#073B23]">
-              Summary of Requests
-            </h2>
-            <p className="mt-1 text-[10.5px] text-[#77786F]">
-              A quick snapshot of your submitted service requests and their current status.
-            </p>
-          </div>
-          <span className="text-[11px] text-[#77786F]">Updated just now</span>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 min-[641px]:grid-cols-2 min-[1101px]:grid-cols-4">
-          {summaryCards.map(({ title, count, description, tone, Icon }) => (
-            <article
-              className={`flex items-center gap-3 rounded-[10px] border px-4 py-[14px] shadow-[0_2px_8px_rgba(7,59,35,0.12)] ${cardStyles[tone].card}`}
-              key={title}
-            >
-              <span className={`grid size-9 shrink-0 place-items-center rounded-[9px] [&>svg]:size-[18px] ${cardStyles[tone].icon}`}>
-                <Icon />
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+        {statCards.map(({ key, title, count, description, bg, hoverRing, Icon }) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => onNavigate('my-requests')}
+            className={`group flex flex-col justify-between rounded-xl ${bg} ${hoverRing} p-4 text-left text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5`}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[12px] font-bold text-white/90 sm:text-[13px]">{title}</span>
+              <Icon className="size-4 shrink-0 text-white/70 transition-transform group-hover:scale-110" />
+            </div>
+            <div className="mt-3">
+              <span className="font-display text-[24px] font-extrabold tracking-tight leading-none sm:text-[28px]">
+                {count}
               </span>
-              <div className="min-w-0">
-                <p className={`text-[22px] leading-none font-extrabold ${cardStyles[tone].value}`}>{count}</p>
-                <h3 className={`mt-1 truncate text-[11.5px] font-bold ${cardStyles[tone].label}`}>{title}</h3>
-                <p className={`mt-[2px] truncate text-[9.5px] ${cardStyles[tone].description}`}>{description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+              <span className="mt-1.5 block text-[11px] font-medium text-white/75">{description}</span>
+            </div>
+          </button>
+        ))}
+      </div>
 
-      <section className="rounded-[10px] border border-[#E3E8E5] bg-white px-4 py-[14px] shadow-[0_2px_8px_rgba(18,44,30,0.04)]" aria-labelledby="sd-status-title">
-        <div className="mb-3 flex items-center justify-between gap-4">
+      <section className={cardClass} aria-labelledby="sd-status-title">
+        <div className="flex flex-col gap-2 border-b border-[#E7DFD0] pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 id="sd-status-title" className="text-[14px] font-bold text-[#073B23]">Request Status Overview</h2>
-            <p className="mt-1 text-[10.5px] text-[#77786F]">Distribution of your requests by current status</p>
+            <h2 id="sd-status-title" className="font-display text-[17px] font-extrabold tracking-tight text-[#073B23]">
+              Request Status Overview
+            </h2>
+            <p className="text-[12px] text-[#8A7344]">Distribution of your requests by current status</p>
           </div>
-          <span className="rounded-full bg-[#F7F5F0] px-2.5 py-1 text-[10px] font-bold text-[#0A4B2D]">
+          <span className="rounded-full border border-[#E7DFD0] bg-[#FBF9F5] px-3 py-1 text-[11px] font-bold text-[#073B23]">
             {total} total
           </span>
         </div>
 
         <div
-          className="flex h-[12px] w-full overflow-hidden rounded-full bg-[#E3E8E5]"
+          className="mt-4 flex h-2.5 w-full overflow-hidden rounded-full bg-[#E7DFD0]"
           role="img"
           aria-label={statuses.map((status) => `${status} ${statusCounts[status]}`).join(', ')}
         >
           {statuses.map((status) => (
             <span
-              className={`block h-full ${segmentClasses[statusClass(status)]}`}
+              className={`block h-full ${statusSegmentClasses[statusClass(status)]}`}
               key={status}
               style={{ width: `${total ? (statusCounts[status] / total) * 100 : 0}%` }}
             />
           ))}
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
           {statuses.map((status) => (
-            <div className="flex items-center gap-[7px] text-[10.5px] text-[#77786F]" key={status}>
-              <span className={`size-[7px] rounded-full ${dotClasses[statusClass(status)]}`} />
+            <div className="flex items-center gap-1.5 text-[11px] text-[#8A7344]" key={status}>
+              <span className={`size-2 rounded-full ${statusDotClasses[statusClass(status)]}`} />
               <span>{status}</span>
-              <strong className="text-[11px] font-bold text-[#073B23]">{statusCounts[status]}</strong>
+              <strong className="text-[12px] font-extrabold text-[#073B23]">{statusCounts[status]}</strong>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-[10px] border border-[#E3E8E5] bg-white shadow-[0_2px_10px_rgba(18,44,30,0.05)]" aria-labelledby="sd-tracker-title">
-        <div className="flex flex-col gap-3 border-b border-[#E3E8E5] bg-[#F7F5F0] px-4 py-[14px] min-[641px]:flex-row min-[641px]:items-center min-[641px]:justify-between">
+      <section className={cardClass} aria-labelledby="sd-tracker-title">
+        <div className="flex flex-col gap-2 border-b border-[#E7DFD0] pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-[10px] font-bold tracking-[1.4px] text-[#0A4B2D] uppercase">Status Tracker</p>
-            <h2 id="sd-tracker-title" className="mt-1 text-[16px] font-bold text-[#073B23]">
+            <h2 id="sd-tracker-title" className="font-display text-[17px] font-extrabold tracking-tight text-[#073B23]">
               Request Status Tracker
             </h2>
-            <p className="mt-1 text-[10.5px] text-[#77786F]">
+            <p className="text-[12px] text-[#8A7344]">
               Live status and staff remarks for your submitted requests.
             </p>
           </div>
-
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            <span className="text-[9.5px] font-bold tracking-[1px] text-[#0A4B2D] uppercase">Indicator:</span>
-            {statuses.map((status) => (
-              <span className="inline-flex items-center gap-1.5 text-[10.5px] text-[#77786F]" key={status}>
-                <span className={`size-[7px] rounded-full ${dotClasses[statusClass(status)]}`} />
-                {status}
-              </span>
-            ))}
-          </div>
+          <button
+            type="button"
+            onClick={() => onNavigate('my-requests')}
+            className="text-[12px] font-bold text-[#073B23] hover:text-[#0A4B2D] hover:underline"
+          >
+            View My Requests &rarr;
+          </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] border-collapse text-left">
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full min-w-[700px] border-collapse text-left text-[12px]">
             <thead>
-              <tr className="border-b border-[#E3E8E5]">
+              <tr className="border-b border-[#E7DFD0] bg-[#FBF9F5] text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
                 {['Ref No.', 'Department', 'Type of Request', 'Date Submitted', 'Current Status', 'Staff Remarks'].map((column) => (
-                  <th
-                    className="px-4 py-[11px] text-[9.5px] font-bold tracking-[0.8px] text-[#77786F] uppercase"
-                    key={column}
-                    scope="col"
-                  >
+                  <th className="py-3 px-3.5" key={column} scope="col">
                     {column}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#E7DFD0]">
               {trackedRequests.length === 0 ? (
                 <tr>
-                  <td className="px-4 py-8 text-center text-[11.5px] text-[#77786F]" colSpan={6}>
+                  <td className="py-12 text-center text-[12px] text-[#8A7344]" colSpan={6}>
                     You have not submitted any requests yet.
                   </td>
                 </tr>
               ) : (
                 trackedRequests.map((request) => (
-                  <tr
-                    className="border-b border-[#E3E8E5] transition-colors duration-150 last:border-b-0 hover:bg-[#F7F5F0]"
-                    key={request.ref}
-                  >
-                    <td className="px-4 py-[12px] text-[11.5px] font-bold text-[#073B23]">{request.ref}</td>
-                    <td className="px-4 py-[12px] text-[11.5px] text-[#073B23]">{request.department}</td>
-                    <td className="px-4 py-[12px] text-[11.5px] text-[#073B23]">
-                      {request.shortType || request.type}
-                    </td>
-                    <td className="px-4 py-[12px] text-[11.5px] text-[#77786F]">{request.date}</td>
-                    <td className="px-4 py-[12px]">
-                      <span className={`inline-flex rounded-full px-2.5 py-1 text-[9.5px] font-bold tracking-[0.3px] uppercase ${badgeClasses[statusClass(request.status)]}`}>
+                  <tr className="transition-colors duration-150 hover:bg-[#FBF9F5]" key={request.ref}>
+                    <td className="py-3 px-3.5 font-bold text-[#073B23]">{request.ref}</td>
+                    <td className="py-3 px-3.5 font-semibold text-[#073B23]">{request.department}</td>
+                    <td className="py-3 px-3.5 text-[#073B23]">{request.shortType || request.type}</td>
+                    <td className="py-3 px-3.5 text-[#8A7344]">{request.date}</td>
+                    <td className="py-3 px-3.5">
+                      <span className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide ${statusBadgeClasses[statusClass(request.status)]}`}>
                         {request.status}
                       </span>
                     </td>
-                    <td className="px-4 py-[12px] text-[11.5px] text-[#77786F]">
+                    <td className="py-3 px-3.5 text-[#8A7344]">
                       {request.remarks || <span aria-label="No remarks">—</span>}
                     </td>
                   </tr>

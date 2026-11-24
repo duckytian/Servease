@@ -6,17 +6,17 @@ const today = new Date().toLocaleDateString('en-US', {
 
 function PageHeader({ heading, description }) {
   return (
-    <div className="mb-5 flex items-end justify-between gap-5 max-[760px]:items-start">
+    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <p className="mb-[6px] text-[10px] font-extrabold tracking-[1.3px] text-[#0A4B2D] uppercase">
+        <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#8A7344]">
           Student Dashboard
         </p>
-        <h1 className="mt-[6px] text-[20px] font-extrabold leading-[1.25] tracking-[-0.4px] text-[#073B23]">
+        <h1 className="font-display text-[22px] font-extrabold tracking-tight text-[#073B23] sm:text-[24px]">
           {heading}
         </h1>
-        <p className="mt-[6px] text-[12px] text-[#77786F]">{description}</p>
+        <p className="mt-1 text-[12px] text-[#8A7344]">{description}</p>
       </div>
-      <span className="shrink-0 rounded-lg border border-[#E3E8E5] bg-white px-[11px] py-[7px] text-[10.5px] font-semibold text-[#77786F] max-[760px]:hidden">
+      <span className="shrink-0 rounded-lg border border-[#E7DFD0] bg-[#FBF9F5] px-3 py-1.5 text-[12px] font-semibold text-[#073B23] max-[760px]:hidden">
         {today}
       </span>
     </div>

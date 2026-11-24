@@ -2,47 +2,74 @@ import ServEaseMark from '../../../components/ServEaseMark'
 import { navigation } from '../pages/data.js'
 import { LogoutIcon } from '../pages/icons.jsx'
 
-function StudentSidebar({ activeSection, onNavigate, onLogout }) {
+function StudentSidebar({ activeSection, onNavigate, onLogout, requestCount = 0 }) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 flex w-[76px] flex-col border-r border-[#0A4B2D] bg-[#073B23] text-white min-[901px]:w-[232px]">
-      <div className="flex h-[68px] shrink-0 items-center gap-[10px] border-b border-[#0A4B2D] px-[18px] min-[901px]:px-5">
-        <ServEaseMark className="size-[30px] shrink-0" />
-        <div className="hidden min-[901px]:block">
-          <p className="text-[17px] leading-none font-extrabold tracking-[-0.4px] text-[#D8C6A5]">ServEase</p>
-          <p className="mt-1 text-[8px] font-extrabold tracking-[1.8px] text-[#FFFDF5]">SERVICE + EASE</p>
+    <aside className="fixed inset-y-0 left-0 z-30 flex w-[230px] flex-col bg-[#073B23] text-white shadow-xl transition-all duration-300 max-[900px]:w-[70px]">
+      <div className="flex h-[72px] shrink-0 items-center gap-3 border-b border-[#0A4B2D] px-5 max-[900px]:justify-center max-[900px]:px-0">
+        <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#0A4B2D] text-[#8A7344] ring-1 ring-[#8A7344]/30">
+          <ServEaseMark className="size-6" />
+        </div>
+        <div className="flex flex-col max-[900px]:hidden">
+          <span className="font-display text-[20px] font-extrabold tracking-tight text-white leading-none">
+            ServEase
+          </span>
+          <span className="mt-1 text-[8px] font-bold tracking-[2.2px] text-[#8A7344]">
+            STUDENT PORTAL
+          </span>
         </div>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-[18px]" aria-label="Student dashboard navigation">
+      <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-5 max-[900px]:px-2" aria-label="Student dashboard navigation">
+        <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-[#8A7344] max-[900px]:hidden">
+          Menu
+        </p>
+
         {navigation.map(({ key, label, Icon }) => {
           const isActive = activeSection === key
+          const count = key === 'my-requests' ? requestCount : null
+
           return (
             <button
-              className={`relative flex min-h-[42px] w-full items-center gap-[11px] rounded-[10px] border-0 px-3 text-left text-[12.5px] font-semibold transition-colors duration-200 [&>svg]:size-[18px] [&>svg]:shrink-0 ${
-                isActive
-                  ? 'bg-[#0A4B2D] text-white before:absolute before:inset-y-[11px] before:left-0 before:w-[3px] before:rounded-r-[3px] before:bg-white before:content-[""]'
-                  : 'bg-transparent text-white/70 hover:bg-[#0A4B2D] hover:text-white'
-              }`}
               key={key}
               type="button"
               onClick={() => onNavigate(key)}
+              title={label}
               aria-current={isActive ? 'page' : undefined}
+              className={`group flex w-full items-center gap-3.5 rounded-lg px-3.5 py-2.5 text-left text-[13px] font-medium transition-all duration-150 max-[900px]:justify-center max-[900px]:px-0 ${
+                isActive
+                  ? 'bg-[#0A4B2D] text-white shadow-xs font-semibold ring-1 ring-[#8A7344]/30'
+                  : 'text-white hover:bg-[#0A4B2D] hover:text-white'
+              }`}
             >
-              <Icon />
-              <span className="hidden whitespace-nowrap min-[901px]:inline">{label}</span>
+              <span className={`shrink-0 ${isActive ? 'text-[#8A7344]' : 'text-white group-hover:text-white'}`}>
+                <Icon className="size-[18px]" />
+              </span>
+              <span className="truncate max-[900px]:hidden">{label}</span>
+              {count !== null && (
+                <span
+                  className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold max-[900px]:hidden ${
+                    isActive
+                      ? 'bg-[#8A7344] text-[#073B23]'
+                      : 'bg-[#0A4B2D] text-[#8A7344] group-hover:bg-[#0A4B2D]'
+                  }`}
+                >
+                  {count}
+                </span>
+              )}
             </button>
           )
         })}
       </nav>
 
-      <div className="flex flex-col gap-3 border-t border-[#0A4B2D] px-3 py-4">
+      <div className="shrink-0 border-t border-[#0A4B2D] p-3">
         <button
-          className="flex min-h-[40px] w-full items-center justify-center gap-[10px] rounded-[10px] border-0 bg-[#0A4B2D] px-3 text-[11.5px] font-extrabold text-white transition-colors duration-200 hover:bg-white hover:text-[#073B23] min-[901px]:justify-start [&>svg]:size-4 [&>svg]:shrink-0"
           type="button"
           onClick={onLogout}
+          title="Logout"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[12px] font-medium text-white transition-colors hover:bg-[#0A4B2D] hover:text-white max-[900px]:justify-center max-[900px]:px-0"
         >
-          <LogoutIcon />
-          <span className="hidden min-[901px]:inline">Log Out</span>
+          <LogoutIcon className="size-[17px] shrink-0" />
+          <span className="truncate max-[900px]:hidden">Logout</span>
         </button>
       </div>
     </aside>
