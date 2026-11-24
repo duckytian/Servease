@@ -24,8 +24,6 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
   const quickRemarkPresets = [
     'Your document is ready for release. Please visit the Registrar Office window.',
     'Your request is currently being processed by the records section.',
-    'Under verification with collegiate dean and registrar records.',
-    'Missing required clearance or credential documentation. Please visit in person.',
   ]
 
   const handleSubmit = (e) => {
@@ -173,7 +171,7 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
                 Quick Templates:
               </span>
               <div className="mt-1 flex flex-wrap gap-1.5">
-                {(['For Release', 'Being Processed', 'Being Processed', 'Missing Clearance']).map((label, idx) => (
+                {(['For Release', 'Being Processed']).map((label, idx) => (
                   <button
                     key={idx}
                     type="button"
