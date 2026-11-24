@@ -6,7 +6,7 @@ function StudentSidebar({ activeSection, onNavigate, onLogout }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 flex w-[76px] flex-col border-r border-[#0A4B2D] bg-[#073B23] text-white min-[901px]:w-[232px]">
       <div className="flex h-[68px] shrink-0 items-center gap-[10px] border-b border-[#0A4B2D] px-[18px] min-[901px]:px-5">
-        <ServEaseMark className="size-[30px] shrink-0 text-white" accent="#FFFFFF" />
+        <ServEaseMark className="size-[30px] shrink-0" />
         <div className="hidden min-[901px]:block">
           <p className="text-[17px] leading-none font-extrabold tracking-[-0.4px] text-[#D8C6A5]">ServEase</p>
           <p className="mt-1 text-[8px] font-extrabold tracking-[1.8px] text-[#FFFDF5]">SERVICE + EASE</p>

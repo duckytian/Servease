@@ -21,7 +21,7 @@ function RegistrarSidebar({
       {/* Brand Header */}
       <div className="flex h-[72px] shrink-0 items-center gap-3 border-b border-[#0A4B2D] px-5 max-[900px]:justify-center max-[900px]:px-0">
         <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#0A4B2D] text-[#8A7344] ring-1 ring-[#8A7344]/30">
-          <ServEaseMark className="size-6 text-[#8A7344]" accent="#16843F" />
+          <ServEaseMark className="size-6" />
         </div>
         <div className="flex flex-col max-[900px]:hidden">
           <span className="font-display text-[20px] font-extrabold tracking-tight text-white leading-none">
