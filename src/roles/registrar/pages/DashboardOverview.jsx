@@ -23,8 +23,8 @@ function DashboardOverview({
       key: 'all-requests',
       title: 'Total Requests',
       count: requests.length,
-      bg: 'bg-[#073b23]',
-      hoverRing: 'hover:ring-2 hover:ring-[#073b23]/30',
+      bg: 'bg-[#073B23]',
+      hoverRing: 'hover:ring-2 hover:ring-[#073B23]/30',
       Icon: AllRequestsIcon,
       nav: 'all-requests'
     },
@@ -32,8 +32,8 @@ function DashboardOverview({
       key: 'pending',
       title: 'Pending',
       count: statusCounts.Pending || 0,
-      bg: 'bg-[#8a7344]',
-      hoverRing: 'hover:ring-2 hover:ring-[#8a7344]/30',
+      bg: 'bg-[#8A7344]',
+      hoverRing: 'hover:ring-2 hover:ring-[#8A7344]/30',
       Icon: PendingIcon,
       nav: 'pending'
     },
@@ -41,8 +41,8 @@ function DashboardOverview({
       key: 'processing',
       title: 'Processing',
       count: statusCounts.Processing || 0,
-      bg: 'bg-[#0a4b2d]',
-      hoverRing: 'hover:ring-2 hover:ring-[#0a4b2d]/30',
+      bg: 'bg-[#0A4B2D]',
+      hoverRing: 'hover:ring-2 hover:ring-[#0A4B2D]/30',
       Icon: ProcessingIcon,
       nav: 'processing'
     },
@@ -50,8 +50,8 @@ function DashboardOverview({
       key: 'completed',
       title: 'Completed',
       count: statusCounts.Completed || 0,
-      bg: 'bg-[#15803d]',
-      hoverRing: 'hover:ring-2 hover:ring-[#15803d]/30',
+      bg: 'bg-[#16843F]',
+      hoverRing: 'hover:ring-2 hover:ring-[#16843F]/30',
       Icon: CompletedIcon,
       nav: 'completed'
     }
@@ -88,15 +88,15 @@ function DashboardOverview({
 
       {/* Recent Requests Section */}
       <section className={cardClass} aria-labelledby="recent-requests-title">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-[#e7dfd0] pb-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-[#E7DFD0] pb-4">
           <div>
             <h3
               id="recent-requests-title"
-              className="font-display text-[17px] font-extrabold tracking-tight text-[#073b23]"
+              className="font-display text-[17px] font-extrabold tracking-tight text-[#073B23]"
             >
               Recent Requests
             </h3>
-            <p className="text-[12px] text-[#6e7368]">
+            <p className="text-[12px] text-[#77786F]">
               Latest student service submissions requiring attention or status
               updates.
             </p>
@@ -104,7 +104,7 @@ function DashboardOverview({
           <button
             type="button"
             onClick={() => onNavigate('all-requests')}
-            className="text-[12px] font-bold text-[#073b23] hover:text-[#0a4b2d] hover:underline"
+            className="text-[12px] font-bold text-[#073B23] hover:text-[#0A4B2D] hover:underline"
           >
             View All Requests &rarr;
           </button>
@@ -114,7 +114,7 @@ function DashboardOverview({
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[650px] border-collapse text-left text-[12px]">
             <thead>
-              <tr className="border-b border-[#eee7da] bg-[#fbf9f5] text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
+              <tr className="border-b border-[#E7DFD0] bg-[#FBF9F5] text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
                 <th className="py-3 px-3.5">Ref. No.</th>
                 <th className="py-3 px-3.5">Student ID</th>
                 <th className="py-3 px-3.5">Student Name</th>
@@ -124,28 +124,28 @@ function DashboardOverview({
                 <th className="py-3 px-3.5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#f1ede4]">
+            <tbody className="divide-y divide-[#E7DFD0]">
               {recentRequests.map(req => {
                 const statusKey = getStatusKey(req.status);
                 return (
                   <tr
                     key={req.ref}
                     onClick={() => onOpenRequest(req)}
-                    className="cursor-pointer transition-colors duration-150 hover:bg-[#fbf9f5]"
+                    className="cursor-pointer transition-colors duration-150 hover:bg-[#FBF9F5]"
                   >
-                    <td className="py-3 px-3.5 font-bold text-[#073b23]">
+                    <td className="py-3 px-3.5 font-bold text-[#073B23]">
                       {req.ref}
                     </td>
-                    <td className="py-3 px-3.5 text-[#5f6f62]">
+                    <td className="py-3 px-3.5 text-[#77786F]">
                       {req.studentId}
                     </td>
-                    <td className="py-3 px-3.5 font-semibold text-[#1f2d24]">
+                    <td className="py-3 px-3.5 font-semibold text-[#073B23]">
                       {req.studentName}
                     </td>
-                    <td className="py-3 px-3.5 text-[#1f2d24]">
+                    <td className="py-3 px-3.5 text-[#073B23]">
                       {req.shortType || req.type}
                     </td>
-                    <td className="py-3 px-3.5 text-[#7a7a6d]">{req.date}</td>
+                    <td className="py-3 px-3.5 text-[#77786F]">{req.date}</td>
                     <td className="py-3 px-3.5 text-center">
                       <span
                         className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase ${
@@ -162,7 +162,7 @@ function DashboardOverview({
                           e.stopPropagation();
                           onOpenRequest(req);
                         }}
-                        className="rounded px-2.5 py-1 text-[11px] font-bold text-[#073b23] transition-colors hover:bg-[#e4efe5] hover:underline"
+                        className="rounded px-2.5 py-1 text-[11px] font-bold text-[#073B23] transition-colors hover:bg-[#F4F2ED] hover:underline"
                       >
                         [View]
                       </button>

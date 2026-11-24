@@ -13,7 +13,7 @@ function RegistrarLayout({
   overlays,
 }) {
   return (
-    <div className="min-h-screen bg-[#f7f5f0] text-[13px] text-[#263a2f]">
+    <div className="min-h-screen bg-[#F7F5F0] text-[13px] text-[#073B23]">
       {/* Sidebar */}
       <RegistrarSidebar
         activeNav={activeNav}

@@ -73,11 +73,11 @@ function SignInPage({ onSignIn, onNavigate }) {
   return (
     <AuthLayout activePage="sign-in" onNavigate={onNavigate}>
       <div className="text-center">
-        <ServEaseMark className="mx-auto mb-[12px] h-[56px] w-[56px] text-[var(--forest)]" />
-        <p className="text-[28px] font-bold leading-none tracking-[-0.8px] text-[var(--forest)]">
+        <ServEaseMark className="mx-auto mb-[12px] h-[56px] w-[56px] text-[#073B23]" />
+        <p className="text-[28px] font-bold leading-none tracking-[-0.8px] text-[#073B23]">
           ServEase
         </p>
-        <p className="mt-[7px] text-[10px] font-semibold tracking-[3px] text-[#857f6d]">
+        <p className="mt-[7px] text-[10px] font-semibold tracking-[3px] text-[#77786F]">
           SERVICE + EASE
         </p>
       </div>

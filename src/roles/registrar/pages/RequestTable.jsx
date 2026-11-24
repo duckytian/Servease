@@ -108,23 +108,23 @@ function RequestTable({
   return (
     <section className={cardClass} aria-labelledby="all-requests-heading">
       {/* Header and Title */}
-      <div className="flex flex-col gap-4 border-b border-[#e7dfd0] pb-5">
+      <div className="flex flex-col gap-4 border-b border-[#E7DFD0] pb-5">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2
               id="all-requests-heading"
-              className="font-display text-[20px] font-extrabold tracking-tight text-[#073b23]"
+              className="font-display text-[20px] font-extrabold tracking-tight text-[#073B23]"
             >
               {getPageTitle()}
             </h2>
-            <p className="text-[12px] text-[#6e7368]">
+            <p className="text-[12px] text-[#77786F]">
               Search, filter, view details, and update statuses for student
               documents.
             </p>
           </div>
-          <div className="text-[12px] font-medium text-[#7a7a6d]">
+          <div className="text-[12px] font-medium text-[#77786F]">
             Total Found:{' '}
-            <strong className="text-[#073b23]">
+            <strong className="text-[#073B23]">
               {filteredRequests.length}
             </strong>
           </div>
@@ -142,14 +142,14 @@ function RequestTable({
                 setCurrentPage(1);
               }}
               placeholder="Search by Student ID or Reference Number..."
-              className="w-full rounded-lg border border-[#e7dfd0] bg-white py-2.5 pl-9 pr-4 text-[13px] text-[#1f2d24] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#073b23] focus:ring-2 focus:ring-[#073b23]/15"
+              className="w-full rounded-lg border border-[#E7DFD0] bg-white py-2.5 pl-9 pr-4 text-[13px] text-[#073B23] placeholder:text-[#77786F] outline-none transition-all focus:border-[#073B23] focus:ring-2 focus:ring-[#073B23]/15"
             />
-            <SearchIcon className="absolute left-3 top-3 size-4 text-[#8a7344]" />
+            <SearchIcon className="absolute left-3 top-3 size-4 text-[#8A7344]" />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-2.5 text-[12px] font-bold text-[#7a7a6d] hover:text-[#1f2d24]"
+                className="absolute right-3 top-2.5 text-[12px] font-bold text-[#77786F] hover:text-[#0A4B2D]"
               >
                 &times;
               </button>
@@ -158,7 +158,7 @@ function RequestTable({
 
           {/* Filter by Request Type Dropdown */}
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#8a7344] whitespace-nowrap hidden sm:inline-flex">
+            <span className="flex items-center gap-1 text-[11px] font-semibold text-[#8A7344] whitespace-nowrap hidden sm:inline-flex">
               <FilterIcon className="size-3" />
               Filter by Request Type:
             </span>
@@ -168,7 +168,7 @@ function RequestTable({
                 setSelectedType(e.target.value);
                 setCurrentPage(1);
               }}
-              className="rounded-lg border border-[#e7dfd0] bg-white px-3 py-2 text-[12px] font-medium text-[#1f2d24] outline-none transition-all focus:border-[#073b23]"
+              className="rounded-lg border border-[#E7DFD0] bg-white px-3 py-2 text-[12px] font-medium text-[#073B23] outline-none transition-all focus:border-[#073B23]"
             >
               {requestTypes.map(type => (
                 <option key={type} value={type}>
@@ -181,7 +181,7 @@ function RequestTable({
           {/* Filter by Status Dropdown */}
           {!activeFilterStatus && (
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-semibold text-[#8a7344] whitespace-nowrap hidden sm:inline">
+              <span className="text-[11px] font-semibold text-[#8A7344] whitespace-nowrap hidden sm:inline">
                 Filter by Status:
               </span>
               <select
@@ -190,7 +190,7 @@ function RequestTable({
                   setSelectedStatus(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="rounded-lg border border-[#e7dfd0] bg-white px-3 py-2 text-[12px] font-medium text-[#1f2d24] outline-none transition-all focus:border-[#073b23]"
+                className="rounded-lg border border-[#E7DFD0] bg-white px-3 py-2 text-[12px] font-medium text-[#073B23] outline-none transition-all focus:border-[#073B23]"
               >
                 <option value="All Statuses">All Statuses</option>
                 {statusOptions.map(st => (
@@ -208,7 +208,7 @@ function RequestTable({
       <div className="mt-4 overflow-x-auto">
         <table className="w-full min-w-[700px] border-collapse text-left text-[12px]">
           <thead>
-            <tr className="border-b border-[#eee7da] bg-[#fbf9f5] text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
+            <tr className="border-b border-[#E7DFD0] bg-[#FBF9F5] text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
               <th className="py-3.5 px-3.5">Ref. No.</th>
               <th className="py-3.5 px-3.5">Student ID</th>
               <th className="py-3.5 px-3.5">Student Name</th>
@@ -218,11 +218,11 @@ function RequestTable({
               <th className="py-3.5 px-3.5 text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#f1ede4]">
+          <tbody className="divide-y divide-[#E7DFD0]">
             {displayedRequests.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-[#7a7a6d]">
-                  <p className="text-[14px] font-semibold text-[#1f2d24]">
+                <td colSpan={7} className="py-12 text-center text-[#77786F]">
+                  <p className="text-[14px] font-semibold text-[#073B23]">
                     No matching requests found
                   </p>
                   <p className="mt-1 text-[12px]">
@@ -237,21 +237,21 @@ function RequestTable({
                   <tr
                     key={req.ref}
                     onClick={() => onOpenRequest(req)}
-                    className="cursor-pointer transition-colors duration-150 hover:bg-[#fbf9f5]"
+                    className="cursor-pointer transition-colors duration-150 hover:bg-[#FBF9F5]"
                   >
-                    <td className="py-3.5 px-3.5 font-bold text-[#073b23]">
+                    <td className="py-3.5 px-3.5 font-bold text-[#073B23]">
                       {req.ref}
                     </td>
-                    <td className="py-3.5 px-3.5 font-mono text-[11px] text-[#5f6f62]">
+                    <td className="py-3.5 px-3.5 font-mono text-[11px] text-[#77786F]">
                       {req.studentId}
                     </td>
-                    <td className="py-3.5 px-3.5 font-semibold text-[#1f2d24]">
+                    <td className="py-3.5 px-3.5 font-semibold text-[#073B23]">
                       {req.studentName}
                     </td>
-                    <td className="py-3.5 px-3.5 text-[#1f2d24]">
+                    <td className="py-3.5 px-3.5 text-[#073B23]">
                       {req.shortType || req.type}
                     </td>
-                    <td className="py-3.5 px-3.5 text-[#7a7a6d]">{req.date}</td>
+                    <td className="py-3.5 px-3.5 text-[#77786F]">{req.date}</td>
                     <td className="py-3.5 px-3.5 text-center">
                       <span
                         className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase ${
@@ -268,7 +268,7 @@ function RequestTable({
                           e.stopPropagation();
                           onOpenRequest(req);
                         }}
-                        className="rounded px-2.5 py-1 text-[12px] font-bold text-[#073b23] transition-colors hover:bg-[#e4efe5] hover:underline"
+                        className="rounded px-2.5 py-1 text-[12px] font-bold text-[#073B23] transition-colors hover:bg-[#F4F2ED] hover:underline"
                       >
                         [View]
                       </button>
@@ -282,20 +282,20 @@ function RequestTable({
       </div>
 
       {/* Footer: Pagination & Export Table Button */}
-      <div className="mt-6 flex flex-col gap-4 border-t border-[#e7dfd0] pt-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="text-[12px] text-[#7a7a6d]">
+      <div className="mt-6 flex flex-col gap-4 border-t border-[#E7DFD0] pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-[12px] text-[#77786F]">
           Showing{' '}
-          <strong className="text-[#1f2d24]">
+          <strong className="text-[#073B23]">
             {filteredRequests.length > 0
               ? (currentPage - 1) * itemsPerPage + 1
               : 0}
           </strong>{' '}
           to{' '}
-          <strong className="text-[#1f2d24]">
+          <strong className="text-[#073B23]">
             {Math.min(currentPage * itemsPerPage, filteredRequests.length)}
           </strong>{' '}
           of{' '}
-          <strong className="text-[#1f2d24]">{filteredRequests.length}</strong>{' '}
+          <strong className="text-[#073B23]">{filteredRequests.length}</strong>{' '}
           entries
         </div>
 
@@ -306,7 +306,7 @@ function RequestTable({
               type="button"
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-              className="grid size-7 place-items-center rounded border border-[#e7dfd0] bg-white text-[12px] font-bold text-[#073b23] transition-all hover:bg-[#f7f3eb] disabled:cursor-not-allowed disabled:opacity-40"
+              className="grid size-7 place-items-center rounded border border-[#E7DFD0] bg-white text-[12px] font-bold text-[#073B23] transition-all hover:bg-[#F4F2ED] disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Previous Page"
             >
               &lt;
@@ -320,8 +320,8 @@ function RequestTable({
                   onClick={() => setCurrentPage(pageNumber)}
                   className={`grid size-7 place-items-center rounded text-[12px] font-bold transition-all ${
                     currentPage === pageNumber
-                      ? 'bg-[#073b23] text-white shadow-xs'
-                      : 'border border-[#e7dfd0] bg-white text-[#1f2d24] hover:bg-[#f7f3eb]'
+                      ? 'bg-[#073B23] text-white shadow-xs'
+                      : 'border border-[#E7DFD0] bg-white text-[#073B23] hover:bg-[#F4F2ED]'
                   }`}
                 >
                   {pageNumber}
@@ -333,7 +333,7 @@ function RequestTable({
               type="button"
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-              className="grid size-7 place-items-center rounded border border-[#e7dfd0] bg-white text-[12px] font-bold text-[#073b23] transition-all hover:bg-[#f7f3eb] disabled:cursor-not-allowed disabled:opacity-40"
+              className="grid size-7 place-items-center rounded border border-[#E7DFD0] bg-white text-[12px] font-bold text-[#073B23] transition-all hover:bg-[#F4F2ED] disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Next Page"
             >
               &gt;
@@ -344,7 +344,7 @@ function RequestTable({
           <button
             type="button"
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-[#e7dfd0] bg-[#fbf9f5] px-3.5 py-2 text-[12px] font-bold text-[#073b23] shadow-xs transition-all hover:border-[#073b23] hover:bg-white active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[#E7DFD0] bg-[#FBF9F5] px-3.5 py-2 text-[12px] font-bold text-[#073B23] shadow-xs transition-all hover:border-[#073B23] hover:bg-white active:scale-95"
           >
             <ExportIcon className="size-3.5" />
             <span>Export Table</span>

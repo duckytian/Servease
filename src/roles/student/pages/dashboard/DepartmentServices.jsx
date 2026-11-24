@@ -1,21 +1,25 @@
-import { cardClass, eyebrowClass, headingClass } from '../classes.js'
 import { ArrowRightIcon, DocumentIcon } from '../icons.jsx'
 
 function DepartmentServices({ department, services, onSelectService, onViewRequests }) {
   return (
-    <div className="space-y-5">
-      <section className={cardClass} aria-labelledby="department-services-title">
-        <div className="mb-[16px] flex flex-col gap-2 border-b border-[var(--border-light)] pb-[14px] min-[641px]:flex-row min-[641px]:items-center min-[641px]:justify-between">
+    <div className="space-y-4">
+      <section
+        className="rounded-2xl border border-[#E3E8E5] bg-white p-4 shadow-[0_2px_10px_rgba(18,44,30,0.04)] min-[641px]:p-5"
+        aria-labelledby="department-services-title"
+      >
+        <div className="mb-4 flex flex-col gap-3 border-b border-[#E3E8E5] pb-4 min-[641px]:flex-row min-[641px]:items-center min-[641px]:justify-between">
           <div>
-            <p className={eyebrowClass}>Available Services</p>
-            <h2 id="department-services-title" className={headingClass}>
+            <p className="mb-[6px] text-[10px] font-bold uppercase tracking-[1.4px] text-[#0A4B2D]">
+              Available Services
+            </p>
+            <h2 id="department-services-title" className="text-[17px] font-extrabold leading-tight text-[#073B23]">
               {department} Services
             </h2>
-            <p className="mt-1 text-[11px] text-[var(--muted)]">
+            <p className="mt-1 text-[11.5px] text-[#77786F]">
               Select a service below to start your request.
             </p>
           </div>
-          <span className="rounded-full bg-[#e4efe5] px-3 py-1 text-[11px] font-bold text-[var(--forest)]">
+          <span className="inline-flex shrink-0 items-center rounded-full bg-[#F7F5F0] px-3 py-[6px] text-[10.5px] font-bold text-[#073B23]">
             {services.length} services
           </span>
         </div>
@@ -23,41 +27,42 @@ function DepartmentServices({ department, services, onSelectService, onViewReque
         <div className="grid grid-cols-1 gap-3 min-[641px]:grid-cols-2">
           {services.map((service) => (
             <button
-              className="group flex items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-4 text-left transition-colors duration-150 hover:border-[var(--forest)] hover:bg-[#f6faf6]"
+              className="group flex items-center gap-[13px] rounded-2xl border border-[#E3E8E5] bg-white px-4 py-[14px] text-left shadow-[0_1px_4px_rgba(18,44,30,0.03)] transition duration-200 hover:-translate-y-[1px] hover:border-[#E3E8E5] hover:bg-[#F7F5F0] hover:shadow-[0_4px_12px_rgba(13,81,52,0.08)] focus-visible:border-[#073B23] focus-visible:outline-none"
               key={service.code}
               type="button"
               onClick={() => onSelectService(service)}
             >
-              <span className="grid size-10 shrink-0 place-items-center rounded-[10px] bg-[#e4efe5] text-[var(--forest)] [&>svg]:size-5">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#F7F5F0] text-[#073B23] [&>svg]:size-5">
                 <DocumentIcon />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[13px] font-bold text-[var(--text)]">
-                  {service.name}
-                </span>
-                <span className="mt-[3px] block text-[11px] leading-[1.5] text-[var(--muted)]">
+                <span className="block text-[12.5px] font-bold text-[#073B23]">{service.name}</span>
+                <span className="mt-[3px] block text-[11px] leading-[1.5] text-[#77786F]">
                   {service.description}
                 </span>
               </span>
-              <ArrowRightIcon className="size-4 shrink-0 text-[var(--forest)] transition-transform duration-150 group-hover:translate-x-0.5" />
+              <ArrowRightIcon className="size-4 shrink-0 text-[#073B23] transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
           ))}
         </div>
       </section>
 
-      <section className={`${cardClass} flex flex-col gap-3 min-[641px]:flex-row min-[641px]:items-center min-[641px]:justify-between`}>
+      <section className="flex flex-col gap-3 rounded-2xl border border-[#E3E8E5] bg-white p-4 shadow-[0_2px_10px_rgba(18,44,30,0.04)] min-[641px]:flex-row min-[641px]:items-center min-[641px]:justify-between min-[641px]:p-5">
         <div>
-          <p className={eyebrowClass}>Your Activity</p>
-          <p className="text-[12px] text-[var(--muted)]">
+          <p className="mb-[6px] text-[10px] font-bold uppercase tracking-[1.4px] text-[#0A4B2D]">
+            Your Activity
+          </p>
+          <p className="text-[11.5px] text-[#77786F]">
             Follow every request from submission to release in My Requests.
           </p>
         </div>
         <button
-          className="inline-flex h-9 items-center justify-center rounded-lg border border-[var(--forest)] bg-[var(--forest)] px-4 text-[12px] font-bold text-white transition-colors duration-150 hover:bg-[#052d1b]"
+          className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-[10px] border border-[#E3E8E5] bg-[#F7F5F0] px-4 text-[11.5px] font-bold text-[#073B23] transition-colors duration-200 hover:bg-[#0A4B2D] hover:text-white"
           type="button"
           onClick={onViewRequests}
         >
           View My Requests
+          <ArrowRightIcon className="size-3.5" />
         </button>
       </section>
     </div>

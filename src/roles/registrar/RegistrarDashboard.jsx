@@ -185,16 +185,22 @@ function RegistrarDashboard({ initialView = 'dashboard', onLogout }) {
 
           {/* Toast Notification Banner */}
           {toastMessage && (
-            <div className="toast-notification" role="status">
-              <span className="toast-notification__icon" aria-hidden="true">
+            <div
+              className="fixed right-6 bottom-6 z-50 flex w-[min(560px,calc(100vw-3rem))] min-h-[52px] items-center gap-4 rounded-xl border border-[#E7DFD0] bg-[#073B23] px-5 py-3 text-left text-[13px] font-semibold text-white shadow-xl"
+              role="status"
+            >
+              <span
+                className="grid size-6 shrink-0 place-items-center rounded-full bg-[#16843F] text-[15px] leading-none text-white"
+                aria-hidden="true"
+              >
                 &check;
               </span>
-              <span className="toast-notification__message">{toastMessage}</span>
+              <span className="min-w-0 flex-1 break-words leading-snug">{toastMessage}</span>
               <button
                 type="button"
                 onClick={() => setToastMessage(null)}
                 aria-label="Dismiss notification"
-                className="toast-notification__close"
+                className="ml-auto grid size-6 shrink-0 place-items-center rounded text-[18px] leading-none text-white/70 hover:text-white"
               >
                 &times;
               </button>

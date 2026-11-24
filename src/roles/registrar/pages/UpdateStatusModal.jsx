@@ -44,7 +44,7 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#073B23]/50 p-4 backdrop-blur-xs"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -55,17 +55,17 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-[#e7dfd0] pb-4">
+        <div className="flex items-center justify-between border-b border-[#E7DFD0] pb-4">
           <h3
             id="modal-update-status-title"
-            className="font-display text-[18px] font-extrabold tracking-tight text-[#073b23]"
+            className="font-display text-[18px] font-extrabold tracking-tight text-[#073B23]"
           >
             Update Request Status
           </h3>
           <button
             type="button"
             onClick={onClose}
-            className="grid size-8 place-items-center rounded-lg text-[#7a7a6d] transition-colors hover:bg-[#f7f3eb] hover:text-[#1f2d24]"
+            className="grid size-8 place-items-center rounded-lg text-[#77786F] transition-colors hover:bg-[#F4F2ED] hover:text-[#0A4B2D]"
             aria-label="Close dialog"
           >
             <CloseIcon className="size-4" />
@@ -73,30 +73,30 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
         </div>
 
         {/* Read-Only Summary */}
-        <div className="mt-4 rounded-xl border border-[#e7dfd0] bg-[#fbf9f5] p-4 text-[13px]">
+        <div className="mt-4 rounded-xl border border-[#E7DFD0] bg-[#FBF9F5] p-4 text-[13px]">
           <div className="grid grid-cols-2 gap-y-2.5">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
                 Request No.
               </span>
-              <p className="font-mono font-bold text-[#073b23]">{request.ref}</p>
+              <p className="font-mono font-bold text-[#073B23]">{request.ref}</p>
             </div>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
                 Student Name
               </span>
-              <p className="font-semibold text-[#1f2d24]">{request.studentName}</p>
+              <p className="font-semibold text-[#073B23]">{request.studentName}</p>
             </div>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
                 Request Type
               </span>
-              <p className="font-medium text-[#1f2d24]">
+              <p className="font-medium text-[#073B23]">
                 {request.shortType || request.type}
               </p>
             </div>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A7344]">
                 Current Status
               </span>
               <div className="mt-0.5">
@@ -118,15 +118,15 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
           <div>
             <label
               htmlFor="update-status-select"
-              className="mb-1.5 block text-[12px] font-bold text-[#1f2d24]"
+              className="mb-1.5 block text-[12px] font-bold text-[#073B23]"
             >
-              Update Status <span className="text-[#8a7344]">*</span>
+              Update Status <span className="text-[#8A7344]">*</span>
             </label>
             <select
               id="update-status-select"
               value={newStatus}
               onChange={(e) => setNewStatus(e.target.value)}
-              className="w-full rounded-lg border border-[#e7dfd0] bg-white px-3.5 py-2.5 text-[13px] font-semibold text-[#1f2d24] outline-none transition-all focus:border-[#073b23] focus:ring-2 focus:ring-[#073b23]/15"
+              className="w-full rounded-lg border border-[#E7DFD0] bg-white px-3.5 py-2.5 text-[13px] font-semibold text-[#073B23] outline-none transition-all focus:border-[#073B23] focus:ring-2 focus:ring-[#073B23]/15"
             >
               {statusOptions.map((st) => (
                 <option key={st} value={st}>
@@ -141,11 +141,11 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
             <div className="mb-1.5 flex items-center justify-between">
               <label
                 htmlFor="update-remarks-text"
-                className="text-[12px] font-bold text-[#1f2d24]"
+                className="text-[12px] font-bold text-[#073B23]"
               >
-                Remarks <span className="text-[#8a7344]">*</span>
+                Remarks <span className="text-[#8A7344]">*</span>
               </label>
-              <span className="text-[11px] font-medium text-[#7a7a6d]">
+              <span className="text-[11px] font-medium text-[#77786F]">
                 {remarks.length}/{maxChars}
               </span>
             </div>
@@ -159,17 +159,17 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
                 if (error) setError('')
               }}
               placeholder="Enter instructions, remarks, or pickup details for the student..."
-              className="w-full rounded-lg border border-[#e7dfd0] bg-white p-3 text-[13px] text-[#1f2d24] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#073b23] focus:ring-2 focus:ring-[#073b23]/15"
+              className="w-full rounded-lg border border-[#E7DFD0] bg-white p-3 text-[13px] text-[#073B23] placeholder:text-[#77786F] outline-none transition-all focus:border-[#073B23] focus:ring-2 focus:ring-[#073B23]/15"
             />
             {error && (
-              <p className="mt-1 text-[11px] font-semibold text-[#8a7344]">
+              <p className="mt-1 text-[11px] font-semibold text-[#8A7344]">
                 {error}
               </p>
             )}
 
             {/* Quick Templates */}
             <div className="mt-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8a7344]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A7344]">
                 Quick Templates:
               </span>
               <div className="mt-1 flex flex-wrap gap-1.5">
@@ -181,7 +181,7 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
                       setRemarks(preset)
                       if (error) setError('')
                     }}
-                    className="rounded bg-[#f7f3eb] border border-[#e7dfd0] px-2 py-1 text-[10px] font-medium text-[#073b23] transition-colors hover:bg-[#e4efe5]"
+                    className="rounded bg-[#F4F2ED] border border-[#E7DFD0] px-2 py-1 text-[10px] font-medium text-[#073B23] transition-colors hover:bg-[#F4F2ED]"
                   >
                     Preset {idx + 1}
                   </button>
@@ -191,17 +191,17 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
           </div>
 
           {/* Action Buttons in strict Green, Beige, White */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#e7dfd0]">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#E7DFD0]">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-[#e7dfd0] bg-white px-4 py-2 text-[13px] font-semibold text-[#6e7368] transition-colors hover:bg-[#f7f3eb] hover:text-[#1f2d24]"
+              className="rounded-lg border border-[#E7DFD0] bg-white px-4 py-2 text-[13px] font-semibold text-[#77786F] transition-colors hover:bg-[#F4F2ED] hover:text-[#0A4B2D]"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded-lg bg-[#073b23] px-5 py-2 text-[13px] font-bold text-white shadow-xs transition-all hover:bg-[#042916] active:scale-95"
+              className="rounded-lg bg-[#073B23] px-5 py-2 text-[13px] font-bold text-white shadow-xs transition-all hover:bg-[#0A4B2D] active:scale-95"
             >
               Save Changes
             </button>

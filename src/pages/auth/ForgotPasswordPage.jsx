@@ -30,11 +30,11 @@ function ForgotPasswordPage({ onNavigate }) {
   return (
     <AuthLayout activePage="forgot-password" onNavigate={onNavigate}>
       <div className="text-center">
-        <ServEaseMark className="mx-auto mb-[12px] h-[56px] w-[56px] text-[var(--forest)]" />
-        <p className="text-[26px] font-bold leading-none tracking-[-0.8px] text-[var(--forest)]">
+        <ServEaseMark className="mx-auto mb-[12px] h-[56px] w-[56px] text-[#073B23]" />
+        <p className="text-[26px] font-bold leading-none tracking-[-0.8px] text-[#073B23]">
           Reset Password
         </p>
-        <p className="mt-[10px] text-[12px] leading-[1.6] text-[#857f6d]">
+        <p className="mt-[10px] text-[12px] leading-[1.6] text-[#77786F]">
           Enter your account email and we will send reset instructions.
         </p>
       </div>
@@ -67,7 +67,7 @@ function ForgotPasswordPage({ onNavigate }) {
         </div>
 
         {sent && (
-          <p className="rounded-[9px] bg-[#eaf1e9] px-[14px] py-[12px] text-[11px] font-semibold leading-[1.6] text-[var(--forest)]">
+          <p className="rounded-[9px] bg-[#F4F2ED] px-[14px] py-[12px] text-[11px] font-semibold leading-[1.6] text-[#16843F]">
             Reset instructions have been sent. Check your inbox.
           </p>
         )}

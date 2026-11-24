@@ -9,7 +9,7 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#073B23]/50 p-4 backdrop-blur-xs"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -19,19 +19,19 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
         className="max-h-[88vh] w-full max-w-[720px] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-7"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-[#e7dfd0] pb-4">
+        <div className="flex items-center justify-between border-b border-[#E7DFD0] pb-4">
           <div className="flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-lg bg-[#073b23] text-[#d8c39a]">
+            <span className="grid size-9 place-items-center rounded-lg bg-[#073B23] text-[#8A7344]">
               <InfoIcon className="size-4" />
             </span>
             <div>
               <h3
                 id="modal-tech-stack-title"
-                className="font-display text-[18px] font-extrabold tracking-tight text-[#073b23]"
+                className="font-display text-[18px] font-extrabold tracking-tight text-[#073B23]"
               >
                 Tech Stack &amp; Request Workflow
               </h3>
-              <p className="text-[11px] text-[#7a7a6d]">
+              <p className="text-[11px] text-[#77786F]">
                 How ServEase is built and how requests move through the registrar.
               </p>
             </div>
@@ -39,7 +39,7 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="grid size-8 place-items-center rounded-lg text-[#7a7a6d] transition-colors hover:bg-[#f7f3eb] hover:text-[#1f2d24]"
+            className="grid size-8 place-items-center rounded-lg text-[#77786F] transition-colors hover:bg-[#F4F2ED] hover:text-[#0A4B2D]"
             aria-label="Close dialog"
           >
             <CloseIcon className="size-4" />
@@ -49,7 +49,7 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
         <section className="mt-5" aria-labelledby="tech-stack-heading">
           <h4
             id="tech-stack-heading"
-            className="font-display text-[14px] font-extrabold text-[#073b23]"
+            className="font-display text-[14px] font-extrabold text-[#073B23]"
           >
             Technology Stack
           </h4>
@@ -72,12 +72,12 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
             ].map(([label, value]) => (
               <div
                 key={label}
-                className="rounded-xl border border-[#e7dfd0] bg-[#fbf9f5] p-3.5"
+                className="rounded-xl border border-[#E7DFD0] bg-[#FBF9F5] p-3.5"
               >
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-[#8a7344]">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-[#8A7344]">
                   {label}
                 </dt>
-                <dd className="mt-1 text-[12px] leading-relaxed text-[#1f2d24]">{value}</dd>
+                <dd className="mt-1 text-[12px] leading-relaxed text-[#073B23]">{value}</dd>
               </div>
             ))}
           </dl>
@@ -86,7 +86,7 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
         <section className="mt-7" aria-labelledby="workflow-heading">
           <h4
             id="workflow-heading"
-            className="font-display text-[14px] font-extrabold text-[#073b23]"
+            className="font-display text-[14px] font-extrabold text-[#073B23]"
           >
             Request Status Workflow
           </h4>
@@ -94,10 +94,10 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
             {requestStatusWorkflow.map((step) => (
               <li
                 key={step.step}
-                className="rounded-xl border border-[#e7dfd0] bg-white p-4 shadow-xs"
+                className="rounded-xl border border-[#E7DFD0] bg-white p-4 shadow-xs"
               >
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="grid size-6 place-items-center rounded-full bg-[#073b23] text-[11px] font-extrabold text-white">
+                  <span className="grid size-6 place-items-center rounded-full bg-[#073B23] text-[11px] font-extrabold text-white">
                     {step.step}
                   </span>
                   <span
@@ -107,22 +107,22 @@ function TechStackAndWorkflowModal({ isOpen, onClose }) {
                   >
                     {step.status}
                   </span>
-                  <span className="text-[11px] font-semibold text-[#8a7344]">{step.actor}</span>
+                  <span className="text-[11px] font-semibold text-[#8A7344]">{step.actor}</span>
                 </div>
-                <p className="mt-2 text-[12px] leading-relaxed text-[#1f2d24]">
+                <p className="mt-2 text-[12px] leading-relaxed text-[#073B23]">
                   {step.description}
                 </p>
-                <div className="mt-3 grid grid-cols-1 gap-2 text-[11px] text-[#5f6f62] sm:grid-cols-3">
+                <div className="mt-3 grid grid-cols-1 gap-2 text-[11px] text-[#77786F] sm:grid-cols-3">
                   <p>
-                    <strong className="text-[#073b23]">Next:</strong>{' '}
+                    <strong className="text-[#073B23]">Next:</strong>{' '}
                     {step.allowedTransitions.join(', ')}
                   </p>
                   <p>
-                    <strong className="text-[#073b23]">Fields:</strong>{' '}
+                    <strong className="text-[#073B23]">Fields:</strong>{' '}
                     {step.requiredFields.join(', ')}
                   </p>
                   <p>
-                    <strong className="text-[#073b23]">Remarks:</strong>{' '}
+                    <strong className="text-[#073B23]">Remarks:</strong>{' '}
                     {step.remarksRequirement}
                   </p>
                 </div>

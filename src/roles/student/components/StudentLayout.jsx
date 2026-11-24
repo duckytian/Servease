@@ -17,23 +17,20 @@ function StudentLayout({
   overlays,
 }) {
   return (
-    <div className="min-h-screen min-h-svh bg-[#f7f3eb] text-[14px] text-[var(--text)]">
+    <div className="min-h-screen bg-[#F7F5F0] text-[#073B23]">
       <StudentSidebar activeSection={activeSection} onNavigate={onNavigate} onLogout={onLogout} />
 
-      <div className="ml-[72px] min-h-screen min-[901px]:ml-[246px]">
+      <div className="ml-[76px] min-h-screen min-[901px]:ml-[232px]">
         <StudentTopbar
-          activeSection={activeSection}
           user={user}
-          onNavigate={onNavigate}
           showNotifications={showNotifications}
           onToggleNotifications={onToggleNotifications}
           onCloseNotifications={onCloseNotifications}
           requests={requests}
         />
 
-        <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 min-[901px]:px-6 min-[901px]:pb-8 min-[901px]:pt-5">
-          <PageHeader heading={heading} description={description} />
-
+        <main className="mx-auto w-full max-w-[1440px] px-[26px] pt-[22px] pb-9 max-[760px]:px-4 max-[760px]:pt-[18px] max-[760px]:pb-[30px]">
+          {activeSection !== 'dashboard' && <PageHeader heading={heading} description={description} />}
           {children}
         </main>
       </div>

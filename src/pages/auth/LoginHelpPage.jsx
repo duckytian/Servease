@@ -21,20 +21,20 @@ function LoginHelpPage({ onNavigate }) {
   return (
     <AuthLayout activePage="login-help" onNavigate={onNavigate}>
       <div className="text-center">
-        <ServEaseMark className="mx-auto mb-[12px] h-[56px] w-[56px] text-[var(--forest)]" />
-        <p className="text-[26px] font-bold leading-none tracking-[-0.8px] text-[var(--forest)]">
+        <ServEaseMark className="mx-auto mb-[12px] h-[56px] w-[56px] text-[#073B23]" />
+        <p className="text-[26px] font-bold leading-none tracking-[-0.8px] text-[#77786F]">
           Login Help
         </p>
-        <p className="mt-[10px] text-[12px] leading-[1.6] text-[#857f6d]">
+        <p className="mt-[10px] text-[12px] leading-[1.6] text-[#77786F]">
           Common issues and reminders for accessing ServEase.
         </p>
       </div>
 
       <div className="mt-[28px] flex flex-col gap-[14px]">
         {helpTopics.map((topic) => (
-          <div className="rounded-[10px] border border-[var(--border)] bg-[#fbfaf7] px-[16px] py-[14px]" key={topic.title}>
-            <p className="text-[12px] font-bold text-[var(--forest)]">{topic.title}</p>
-            <p className="mt-[5px] text-[11px] leading-[1.6] text-[#7a7a6d]">{topic.detail}</p>
+          <div className="rounded-[10px] border border-[#E3E8E5] bg-[#FFFFFF] px-[16px] py-[14px]" key={topic.title}>
+            <p className="text-[12px] font-bold text-[#073B23]">{topic.title}</p>
+            <p className="mt-[5px] text-[11px] leading-[1.6] text-[#77786F]">{topic.detail}</p>
           </div>
         ))}
       </div>

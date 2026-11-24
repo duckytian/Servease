@@ -1,6 +1,12 @@
-import { eyebrowClass, statusDotClass, statusDotClasses } from '../pages/classes.js'
 import { statusClass, studentProfile } from '../pages/data.js'
 import { BellIcon } from '../pages/icons.jsx'
+
+const dotClasses = {
+  pending: 'bg-[#C76E00]',
+  processing: 'bg-[#3B82F6]',
+  completed: 'bg-[#8B5CF6]',
+  rejected: 'bg-[#EF4444]',
+}
 
 function StudentTopbar({ user, showNotifications, onToggleNotifications, onCloseNotifications, requests = [] }) {
   const notifications = requests.slice(0, 5).map((request) => ({
@@ -9,70 +15,80 @@ function StudentTopbar({ user, showNotifications, onToggleNotifications, onClose
     time: request.date,
     status: request.status,
   }))
+  const initials = studentProfile.name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
 
   return (
-    <header className="sticky top-0 z-10 flex min-h-[72px] items-center justify-between gap-5 border-b border-[var(--border)] bg-white px-5 min-[901px]:px-9">
-      <div className="ml-auto flex items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="grid size-[38px] shrink-0 place-items-center rounded-full border-2 border-[#e7dcc3] bg-[var(--forest)] text-[12px] font-bold text-white" aria-hidden="true">JD</div>
+    <header className="sticky top-0 z-20 flex h-[68px] items-center justify-end border-b border-[#E7DFD0] bg-[#F5F0E6] px-6 backdrop-blur-[10px] max-[760px]:px-4">
+      <div className="flex items-center gap-[14px]">
+        <div className="flex items-center gap-[10px]">
+          <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-[#073B23] text-[11px] font-extrabold tracking-[0.3px] text-white" aria-hidden="true">
+            {initials}
+          </span>
           <div className="hidden min-[641px]:block">
-            <p className="text-[12px] font-bold text-[var(--text)]">Welcome! {studentProfile.name}</p>
-            <p className="mt-[3px] text-[10px] text-[var(--muted)]">Student ID: {user?.userId ?? studentProfile.id}</p>
+            <p className="text-[12px] font-extrabold text-[#073B23]">Welcome! {studentProfile.name}</p>
+            <p className="mt-[2px] text-[10px] text-[#77786F]">Student ID: {user?.userId ?? studentProfile.id}</p>
           </div>
+        </div>
 
-          <div className="relative">
-            <button
-              className={`relative grid size-[38px] place-items-center rounded-[10px] border border-[#dfe3e8] bg-white text-[var(--forest)] shadow-[0_2px_6px_rgba(15,35,56,0.08)] transition-[background,border-color,box-shadow] duration-200 hover:border-[#cbdcc8] hover:bg-[#eaf1e9] [&>svg]:size-[18px] ${showNotifications ? 'border-[#cbdcc8] bg-[#eaf1e9]' : ''}`}
-              type="button"
-              aria-label="Notifications"
-              aria-expanded={showNotifications}
-              aria-controls="sd-notification-panel"
-              onClick={onToggleNotifications}
-            >
-              <BellIcon />
-              {notifications.length > 0 && (
-                <span className="absolute -right-[6px] -top-[6px] grid size-[18px] place-items-center rounded-full border-2 border-white bg-[#d92d20] text-[9px] font-bold leading-none text-white">{notifications.length}</span>
-              )}
-            </button>
-
-            {showNotifications && (
-              <div className="absolute right-0 top-[calc(100%+12px)] z-30 w-[340px] max-w-[calc(100vw-32px)] rounded-xl border border-[var(--border)] bg-white p-[18px] shadow-[0_16px_36px_rgba(15,35,56,0.16)]" id="sd-notification-panel">
-                <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] pb-[14px]">
-                  <div>
-                    <p className={eyebrowClass}>Notifications</p>
-                    <h2 className="text-[15px] font-bold text-[#052d1b]">Request Updates</h2>
-                  </div>
-                  <button
-                    className="size-[26px] rounded-[7px] border-0 bg-[#f3f0e8] text-[18px] leading-none text-[#6f7d70]"
-                    type="button"
-                    aria-label="Close notifications"
-                    onClick={onCloseNotifications}
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <ul className="max-h-[320px] overflow-y-auto p-0">
-                  {notifications.length === 0 ? (
-                    <li className="py-4 text-center text-[12px] text-[var(--muted)]">
-                      No request updates yet.
-                    </li>
-                  ) : (
-                    notifications.map((item) => (
-                      <li className="flex items-start gap-3 border-t border-[#eee9dc] py-[15px] first:border-t-0 first:pt-0" key={item.message}>
-                        <span className={`${statusDotClass} mt-[5px] ${statusDotClasses[statusClass(item.status)]}`} />
-                        <div className="flex-1">
-                          <p className="text-[12px] font-bold text-[var(--text)]">{item.title}</p>
-                          <p className="mt-1 text-[11px] leading-[1.5] text-[var(--muted)]">{item.message}</p>
-                        </div>
-                        <time className="shrink-0 text-[10px] whitespace-nowrap text-[var(--muted)]">{item.time}</time>
-                      </li>
-                    ))
-                  )}
-                </ul>
-              </div>
+        <div className="relative">
+          <button
+            className={`relative grid size-9 place-items-center rounded-[10px] border border-[#E3E8E5] bg-white text-[#073B23] transition-colors duration-200 hover:bg-[#F7F5F0] [&>svg]:size-[17px] ${
+              showNotifications ? 'bg-[#F7F5F0]' : ''
+            }`}
+            type="button"
+            aria-label="Notifications"
+            aria-expanded={showNotifications}
+            aria-controls="sd-notification-panel"
+            onClick={onToggleNotifications}
+          >
+            <BellIcon />
+            {notifications.length > 0 && (
+              <span className="absolute -top-[5px] -right-[5px] grid min-w-[17px] place-items-center rounded-[9px] bg-[#D94F45] px-1 text-[9px] font-extrabold text-white">
+                {notifications.length}
+              </span>
             )}
-          </div>
+          </button>
+
+          {showNotifications && (
+            <div className="absolute top-[calc(100%+10px)] right-0 z-40 w-[330px] max-w-[calc(100vw-32px)] rounded-[14px] border border-[#E3E8E5] bg-white p-4 shadow-[0_18px_40px_rgba(16,35,25,0.14)]" id="sd-notification-panel">
+              <div className="flex items-start justify-between gap-3 border-b border-[#E3E8E5] pb-3">
+                <div>
+                  <p className="text-[9px] font-extrabold tracking-[1.4px] text-[#0A4B2D] uppercase">Notifications</p>
+                  <h2 className="mt-1 text-[14px] font-extrabold text-[#073B23]">Request Updates</h2>
+                </div>
+                <button
+                  className="size-[26px] rounded-[7px] border-0 bg-[#F7F5F0] text-[15px] leading-none text-[#77786F]"
+                  type="button"
+                  aria-label="Close notifications"
+                  onClick={onCloseNotifications}
+                >
+                  ×
+                </button>
+              </div>
+
+              <ul className="max-h-[300px] overflow-y-auto p-0">
+                {notifications.length === 0 ? (
+                  <li className="py-7 text-center text-[11.5px] text-[#77786F]">No request updates yet.</li>
+                ) : (
+                  notifications.map((item) => (
+                    <li className="flex items-start gap-[10px] border-b border-[#E3E8E5] py-3 last:border-b-0" key={item.message}>
+                      <span className={`mt-[5px] size-[7px] shrink-0 rounded-full ${dotClasses[statusClass(item.status)]}`} />
+                      <div className="min-w-0 flex-1">
+                        <strong className="block text-[11.5px] font-extrabold text-[#073B23]">{item.title}</strong>
+                        <p className="mt-[3px] text-[10.5px] leading-[1.45] break-words text-[#77786F]">{item.message}</p>
+                      </div>
+                      <time className="shrink-0 text-[9.5px] whitespace-nowrap text-[#77786F]">{item.time}</time>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </header>

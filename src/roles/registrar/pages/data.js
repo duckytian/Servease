@@ -69,11 +69,11 @@ export const technologyStackInfo = {
   typography: 'Display Font: Poppins ExtraBold (800) | Text Font: Inter (300-700)',
   colorPalette: {
     primary: 'Deep Forest Green (#073B23) & Soft Green (#0A4B2D)',
-    background: 'Warm Beige (#F7F3EB, #F1E4C8) & Crisp White (#FFFFFF)',
+    background: 'Warm Beige (#F7F5F0, #F4F2ED) & Crisp White (#FFFFFF)',
     statuses: {
-      pending: 'Warm Beige (#8A7344 / #F7EED9)',
-      processing: 'Deep Sage Green (#0A4B2D / #EDF5EE)',
-      completed: 'Forest Green (#073B23 / #E4EFE5)',
+      pending: 'Warm Beige (#8A7344 / #F4F2ED)',
+      processing: 'Deep Sage Green (#0A4B2D / #F4F2ED)',
+      completed: 'Forest Green (#073B23 / #F4F2ED)',
       total: 'Deep Forest Green (#073B23)',
     },
   },

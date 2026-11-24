@@ -1,4 +1,4 @@
-function ServEaseMark({ className = '', accent = '#79B98D', ...props }) {
+function ServEaseMark({ className = '', accent = '#16843F', ...props }) {
   return (
     <svg
       className={`brand-mark ${className}`.trim()}

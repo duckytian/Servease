@@ -7,7 +7,7 @@ const backgroundStyle = {
 function AuthShowcase() {
   return (
     <section
-      className="relative isolate flex min-h-[280px] flex-col justify-start overflow-hidden px-[clamp(28px,3.4vw,52px)] py-[clamp(30px,4vh,52px)] text-black lg:min-h-0"
+      className="relative isolate flex min-h-[280px] flex-col justify-start overflow-hidden px-[clamp(28px,3.4vw,52px)] py-[clamp(30px,4vh,52px)] text-[#000000] lg:min-h-0"
       aria-labelledby="showcase-heading"
     >
       <div
@@ -24,7 +24,7 @@ function AuthShowcase() {
           <br />
           MADE EASIER
         </h1>
-        <p className="mt-[18px] text-[13px] leading-[1.75] text-black">
+        <p className="mt-[18px] text-[13px] leading-[1.75] text-[#000000]">
           Your centralized digital platform for convenient, organized, and reliable student services.
         </p>
       </div>
