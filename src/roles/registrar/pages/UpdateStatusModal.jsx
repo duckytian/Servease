@@ -173,17 +173,17 @@ function UpdateStatusModal({ request, isOpen, onClose, onSave }) {
                 Quick Templates:
               </span>
               <div className="mt-1 flex flex-wrap gap-1.5">
-                {quickRemarkPresets.map((preset, idx) => (
+                {(['For Release', 'Being Processed', 'Being Processed', 'Missing Clearance']).map((label, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => {
-                      setRemarks(preset)
+                      setRemarks(quickRemarkPresets[idx])
                       if (error) setError('')
                     }}
                     className="rounded bg-[#f7f3eb] border border-[#e7dfd0] px-2 py-1 text-[10px] font-medium text-[#073b23] transition-colors hover:bg-[#e4efe5]"
                   >
-                    Preset {idx + 1}
+                    {label}
                   </button>
                 ))}
               </div>

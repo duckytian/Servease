@@ -4,13 +4,17 @@ import { initialRequestsData } from './pages/data.js'
 import DashboardOverview from './pages/DashboardOverview.jsx'
 import RequestDetails from './pages/RequestDetails.jsx'
 import RequestTable from './pages/RequestTable.jsx'
+import StaffSettingsModal from './pages/StaffSettingsModal.jsx'
 import StudentPortalView from './pages/StudentPortalView.jsx'
 import TechStackAndWorkflowModal from './pages/TechStackAndWorkflowModal.jsx'
 import UpdateStatusModal from './pages/UpdateStatusModal.jsx'
 
 function RegistrarDashboard({ initialView = 'dashboard' }) {
-  // Navigation states: 'dashboard', 'all-requests', 'pending', 'processing', 'completed', 'student-view'
+  // Navigation states: 'dashboard', 'requests', 'student-view'
   const [activeNav, setActiveNav] = useState(initialView)
+
+  // In-page status filter when arriving from dashboard cards or switching
+  const [requestStatusFilter, setRequestStatusFilter] = useState('All Statuses')
 
   // Requests state initialized with realistic data records
   const [requests, setRequests] = useState(() => {
@@ -39,6 +43,9 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
   // Tech stack & workflow modal state
   const [isTechStackModalOpen, setIsTechStackModalOpen] = useState(false)
 
+  // Staff settings modal state
+  const [isStaffSettingsOpen, setIsStaffSettingsOpen] = useState(false)
+
   // Toast notification state
   const [toastMessage, setToastMessage] = useState(null)
 
@@ -61,11 +68,12 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
       if (e.key === 'Escape') {
         if (isUpdateModalOpen) setIsUpdateModalOpen(false)
         if (isTechStackModalOpen) setIsTechStackModalOpen(false)
+        if (isStaffSettingsOpen) setIsStaffSettingsOpen(false)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isUpdateModalOpen, isTechStackModalOpen])
+  }, [isUpdateModalOpen, isTechStackModalOpen, isStaffSettingsOpen])
 
   // Calculate status counts dynamically
   const statusCounts = useMemo(() => {
@@ -78,14 +86,6 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
     })
     return counts
   }, [requests])
-
-  // Filter requests based on active sidebar navigation
-  const activeFilterStatus = useMemo(() => {
-    if (activeNav === 'pending') return 'Pending'
-    if (activeNav === 'processing') return 'Processing'
-    if (activeNav === 'completed') return 'Completed'
-    return null
-  }, [activeNav])
 
   const showToast = (message) => {
     setToastMessage(message)
@@ -110,20 +110,22 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
   // Handle saving status and remarks update
   const handleSaveStatusUpdate = ({ ref, newStatus, remarks }) => {
     const now = new Date()
-    const timeFormatted = now.toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    }) + ' ' + now.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+    const timeFormatted =
+      now.toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+      }) +
+      ' ' +
+      now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
 
     setRequests((prev) =>
       prev.map((item) => {
         if (item.ref !== ref) return item
 
-        // Create new step in status history
         const newStepTitle =
           newStatus === 'Completed'
             ? 'Document Ready & Released'
@@ -149,7 +151,6 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
           statusHistory: updatedHistory,
         }
 
-        // If this is currently selected in request details, keep it in sync
         if (selectedRequest && selectedRequest.ref === ref) {
           setSelectedRequest(updated)
         }
@@ -163,9 +164,13 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
     showToast(`Request ${ref} status updated to "${newStatus}" and remarks saved.`)
   }
 
-  const handleNavigate = (navKey) => {
+  // Handle navigation from sidebar or dashboard cards
+  const handleNavigate = (navKey, filterStatus = null) => {
     setActiveNav(navKey)
     setSelectedRequest(null)
+    if (filterStatus) {
+      setRequestStatusFilter(filterStatus)
+    }
   }
 
   return (
@@ -177,6 +182,7 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
         setSelectedRequest(null)
       }}
       onOpenTechStackModal={() => setIsTechStackModalOpen(true)}
+      onOpenStaffSettings={() => setIsStaffSettingsOpen(true)}
       statusCounts={statusCounts}
       totalCount={requests.length}
       overlays={
@@ -202,6 +208,14 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
             />
           )}
 
+          {/* Staff Settings Modal */}
+          {isStaffSettingsOpen && (
+            <StaffSettingsModal
+              isOpen={isStaffSettingsOpen}
+              onClose={() => setIsStaffSettingsOpen(false)}
+            />
+          )}
+
           {/* Toast Notification Banner */}
           {toastMessage && (
             <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl border border-[#bbf7d0] bg-[#073b23] px-4 py-3 text-[13px] font-semibold text-white shadow-xl animate-fade-in">
@@ -221,7 +235,7 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
         </>
       }
     >
-      {/* 1. Request Details View (Panel 4) */}
+      {/* 1. Request Details View */}
       {selectedRequest ? (
         <RequestDetails
           request={selectedRequest}
@@ -229,13 +243,13 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
           onOpenUpdateModal={handleOpenUpdateModal}
         />
       ) : activeNav === 'student-view' ? (
-        /* 2. Student Portal View (Panel 6) */
+        /* 2. Student Portal View */
         <StudentPortalView
           requests={requests}
           onBackToRegistrar={() => setActiveNav('dashboard')}
         />
       ) : activeNav === 'dashboard' ? (
-        /* 3. Main Registrar Dashboard (Panel 2) */
+        /* 3. Main Registrar Dashboard */
         <DashboardOverview
           requests={requests}
           statusCounts={statusCounts}
@@ -243,11 +257,13 @@ function RegistrarDashboard({ initialView = 'dashboard' }) {
           onNavigate={handleNavigate}
         />
       ) : (
-        /* 4. View Requests Table (Panel 3: All, Pending, Processing, Completed, Rejected) */
+        /* 4. Request Management Page (REQUESTS) with in-page Status and Type filtering */
         <RequestTable
+          key={requestStatusFilter}
           requests={requests}
-          activeFilterStatus={activeFilterStatus}
+          initialStatusFilter={requestStatusFilter}
           onOpenRequest={handleOpenRequest}
+          onOpenUpdateModal={handleOpenUpdateModal}
           onShowToast={showToast}
         />
       )}

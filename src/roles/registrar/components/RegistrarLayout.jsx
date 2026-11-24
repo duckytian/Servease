@@ -6,6 +6,7 @@ function RegistrarLayout({
   onNavigate,
   onSwitchToStudentView,
   onOpenTechStackModal,
+  onOpenStaffSettings,
   statusCounts,
   totalCount,
   children,
@@ -29,6 +30,7 @@ function RegistrarLayout({
           onNavigate={onNavigate}
           onOpenTechStackModal={onOpenTechStackModal}
           onSwitchToStudentView={onSwitchToStudentView}
+          onOpenStaffSettings={onOpenStaffSettings}
         />
 
         <main className="mx-auto w-full max-w-[1440px] p-4 sm:p-6 lg:p-8">

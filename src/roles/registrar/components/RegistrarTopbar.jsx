@@ -6,6 +6,7 @@ function RegistrarTopbar({
   onNavigate,
   onOpenTechStackModal,
   onSwitchToStudentView,
+  onOpenStaffSettings,
 }) {
   return (
     <header className="sticky top-0 z-20 flex h-[72px] items-center justify-between border-b border-[#e7dfd0] bg-white/95 px-6 backdrop-blur-md">
@@ -60,8 +61,13 @@ function RegistrarTopbar({
           </button>
         </div>
 
-        {/* Staff Profile Avatar Card */}
-        <div className="flex items-center gap-2.5 pl-2 border-l border-[#e7dfd0]">
+        {/* Staff Profile Avatar Card – click to open Staff Settings */}
+        <button
+          type="button"
+          onClick={onOpenStaffSettings}
+          title="Registrar Staff Settings"
+          className="flex items-center gap-2.5 pl-2 border-l border-[#e7dfd0] rounded-lg p-1.5 transition-colors hover:bg-[#f7f3eb] focus:outline-none focus:ring-2 focus:ring-[#073b23]/20"
+        >
           <div className="grid size-9 place-items-center rounded-full bg-[#073b23] text-[12px] font-extrabold text-[#d8c39a] ring-2 ring-[#e7dfd0]">
             {registrarStaff.avatar}
           </div>
@@ -73,7 +79,7 @@ function RegistrarTopbar({
               {registrarStaff.title}
             </span>
           </div>
-        </div>
+        </button>
       </div>
     </header>
   )

@@ -18,7 +18,8 @@ function DashboardOverview({ requests, statusCounts, onOpenRequest, onNavigate }
       bg: 'bg-[#073b23]',
       hoverRing: 'hover:ring-2 hover:ring-[#073b23]/30',
       Icon: AllRequestsIcon,
-      nav: 'all-requests',
+      nav: 'requests',
+      filterStatus: 'All Statuses',
     },
     {
       key: 'pending',
@@ -27,7 +28,8 @@ function DashboardOverview({ requests, statusCounts, onOpenRequest, onNavigate }
       bg: 'bg-[#8a7344]',
       hoverRing: 'hover:ring-2 hover:ring-[#8a7344]/30',
       Icon: PendingIcon,
-      nav: 'pending',
+      nav: 'requests',
+      filterStatus: 'Pending',
     },
     {
       key: 'processing',
@@ -36,7 +38,8 @@ function DashboardOverview({ requests, statusCounts, onOpenRequest, onNavigate }
       bg: 'bg-[#0a4b2d]',
       hoverRing: 'hover:ring-2 hover:ring-[#0a4b2d]/30',
       Icon: ProcessingIcon,
-      nav: 'processing',
+      nav: 'requests',
+      filterStatus: 'Processing',
     },
     {
       key: 'completed',
@@ -45,7 +48,8 @@ function DashboardOverview({ requests, statusCounts, onOpenRequest, onNavigate }
       bg: 'bg-[#15803d]',
       hoverRing: 'hover:ring-2 hover:ring-[#15803d]/30',
       Icon: CompletedIcon,
-      nav: 'completed',
+      nav: 'requests',
+      filterStatus: 'Completed',
     },
   ]
 
@@ -54,12 +58,12 @@ function DashboardOverview({ requests, statusCounts, onOpenRequest, onNavigate }
       {/* 4 Statistics Cards row in strict Green, Beige, White */}
       <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => {
-          const { key, title, count, bg, hoverRing, Icon, nav } = card
+          const { key, title, count, bg, hoverRing, Icon, nav, filterStatus } = card
           return (
             <button
               key={key}
               type="button"
-              onClick={() => onNavigate(nav)}
+              onClick={() => onNavigate(nav, filterStatus)}
               className={`group flex flex-col justify-between rounded-xl ${bg} ${hoverRing} p-4 text-left text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5`}
             >
               <div className="flex items-center justify-between">
@@ -94,7 +98,7 @@ function DashboardOverview({ requests, statusCounts, onOpenRequest, onNavigate }
           </div>
           <button
             type="button"
-            onClick={() => onNavigate('all-requests')}
+            onClick={() => onNavigate('requests', 'All Statuses')}
             className="text-[12px] font-bold text-[#073b23] hover:text-[#0a4b2d] hover:underline"
           >
             View All Requests &rarr;

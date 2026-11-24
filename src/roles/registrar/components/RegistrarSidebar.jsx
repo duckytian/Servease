@@ -6,15 +6,8 @@ function RegistrarSidebar({
   activeNav,
   onNavigate,
   onSwitchToStudentView,
-  statusCounts = {},
   totalCount = 0,
 }) {
-  const getBadgeCount = (item) => {
-    if (item.key === 'all-requests') return totalCount
-    if (item.filterStatus) return statusCounts[item.filterStatus] ?? 0
-    return null
-  }
-
   return (
     <aside className="fixed inset-y-0 left-0 z-30 flex w-[230px] flex-col bg-[#073b23] text-white shadow-xl transition-all duration-300 max-[900px]:w-[70px]">
       {/* Brand Header */}
@@ -32,8 +25,8 @@ function RegistrarSidebar({
         </div>
       </div>
 
-      {/* Navigation Links */}
-      <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-5 max-[900px]:px-2">
+      {/* Navigation Links: Exactly Two Main Menu Items (DASHBOARD and REQUESTS) */}
+      <nav className="flex-1 space-y-2 overflow-y-auto px-3 py-5 max-[900px]:px-2">
         <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-[#d8c39a] max-[900px]:hidden">
           Menu
         </p>
@@ -41,7 +34,7 @@ function RegistrarSidebar({
         {navigationItems.map((item) => {
           const { key, label, Icon } = item
           const isActive = activeNav === key
-          const count = getBadgeCount(item)
+          const count = key === 'requests' ? totalCount : null
 
           return (
             <button
@@ -49,20 +42,22 @@ function RegistrarSidebar({
               type="button"
               onClick={() => onNavigate(key)}
               title={label}
-              className={`group flex w-full items-center gap-3.5 rounded-lg px-3.5 py-2.5 text-left text-[13px] font-medium transition-all duration-150 max-[900px]:justify-center max-[900px]:px-0 ${
+              className={`group flex w-full items-center gap-3.5 rounded-lg px-3.5 py-3 text-left text-[13px] font-semibold tracking-wide transition-all duration-150 max-[900px]:justify-center max-[900px]:px-0 ${
                 isActive
-                  ? 'bg-[#042916] text-white shadow-xs font-semibold ring-1 ring-[#d8c39a]/30'
+                  ? 'bg-[#042916] text-white shadow-xs ring-1 ring-[#d8c39a]/40 font-bold'
                   : 'text-[#e4efe5] hover:bg-[#0a4b2d] hover:text-white'
               }`}
             >
               <span className={`shrink-0 ${isActive ? 'text-[#d8c39a]' : 'text-[#a7c5b3] group-hover:text-white'}`}>
-                <Icon className="size-[18px]" />
+                <Icon className="size-[19px]" />
               </span>
-              <span className="truncate max-[900px]:hidden">{label}</span>
+              <span className="truncate max-[900px]:hidden font-display text-[12px] uppercase">
+                {label}
+              </span>
 
               {count !== null && (
                 <span
-                  className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold max-[900px]:hidden ${
+                  className={`ml-auto rounded-full px-2.5 py-0.5 text-[10px] font-bold max-[900px]:hidden ${
                     isActive
                       ? 'bg-[#d8c39a] text-[#073b23]'
                       : 'bg-[#042916] text-[#d8c39a] group-hover:bg-[#042916]'
@@ -75,8 +70,8 @@ function RegistrarSidebar({
           )
         })}
 
-        {/* Live Student View Switcher inside menu */}
-        <div className="pt-4 max-[900px]:pt-2">
+        {/* Live Student View Switcher */}
+        <div className="pt-6 max-[900px]:pt-3">
           <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-[#d8c39a] max-[900px]:hidden">
             Live Preview
           </p>

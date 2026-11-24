@@ -1,26 +1,22 @@
 import { useMemo, useState } from 'react'
 import { cardClass, getStatusKey, statusBadgeClasses } from './classes.js'
 import { requestTypes, statusOptions } from './data.js'
-import { ExportIcon, FilterIcon, SearchIcon } from './icons.jsx'
+import { ChatIcon, EditIcon, ExportIcon, FilterIcon, SearchIcon, ViewEyeIcon } from './icons.jsx'
 
 function RequestTable({
   requests,
   onOpenRequest,
-  activeFilterStatus = null,
+  onOpenUpdateModal,
+  initialStatusFilter = 'All Statuses',
   onShowToast,
 }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState('All Types')
-  const [selectedStatus, setSelectedStatus] = useState(
-    activeFilterStatus || 'All Statuses'
-  )
+  const [selectedStatus, setSelectedStatus] = useState(initialStatusFilter || 'All Statuses')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 8
 
-  // Sync if prop activeFilterStatus changes
-  const effectiveStatus = activeFilterStatus || selectedStatus
-
-  // Filter requests
+  // Filter requests by search query, request type, and status directly in-page
   const filteredRequests = useMemo(() => {
     return requests.filter((req) => {
       const q = searchQuery.trim().toLowerCase()
@@ -37,12 +33,12 @@ function RequestTable({
         req.shortType === selectedType
 
       const matchesStatus =
-        effectiveStatus === 'All Statuses' ||
-        req.status.toLowerCase() === effectiveStatus.toLowerCase()
+        selectedStatus === 'All Statuses' ||
+        req.status.toLowerCase() === selectedStatus.toLowerCase()
 
       return matchesSearch && matchesType && matchesStatus
     })
-  }, [requests, searchQuery, selectedType, effectiveStatus])
+  }, [requests, searchQuery, selectedType, selectedStatus])
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage) || 1
@@ -98,11 +94,16 @@ function RequestTable({
     }
   }
 
-  const getPageTitle = () => {
-    if (activeFilterStatus) {
-      return `${activeFilterStatus} Requests`
-    }
-    return 'All Requests'
+  const isAnyFilterActive =
+    searchQuery.trim() !== '' ||
+    selectedType !== 'All Types' ||
+    selectedStatus !== 'All Statuses'
+
+  const handleResetFilters = () => {
+    setSearchQuery('')
+    setSelectedType('All Types')
+    setSelectedStatus('All Statuses')
+    setCurrentPage(1)
   }
 
   return (
@@ -113,20 +114,32 @@ function RequestTable({
           <div>
             <h2
               id="all-requests-heading"
-              className="font-display text-[20px] font-extrabold tracking-tight text-[#073b23]"
+              className="font-display text-[22px] font-extrabold tracking-tight text-[#073b23]"
             >
-              {getPageTitle()}
+              Requests
             </h2>
             <p className="text-[12px] text-[#6e7368]">
-              Search, filter, view details, and update statuses for student documents.
+              Manage student service requests, update statuses, and log official remarks.
             </p>
           </div>
-          <div className="text-[12px] font-medium text-[#7a7a6d]">
-            Total Found: <strong className="text-[#073b23]">{filteredRequests.length}</strong>
+          <div className="flex items-center gap-3">
+            {isAnyFilterActive && (
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="text-[11px] font-bold text-[#8a7344] hover:text-[#073b23] hover:underline"
+              >
+                Reset Filters
+              </button>
+            )}
+            <div className="text-[12px] font-medium text-[#7a7a6d]">
+              Showing <strong className="text-[#073b23]">{filteredRequests.length}</strong> of{' '}
+              <strong className="text-[#073b23]">{requests.length}</strong>
+            </div>
           </div>
         </div>
 
-        {/* Search & Filter Toolbar */}
+        {/* Clean, Non-Duplicated Toolbar Filters */}
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           {/* Search Input */}
           <div className="relative flex-1">
@@ -137,7 +150,7 @@ function RequestTable({
                 setSearchQuery(e.target.value)
                 setCurrentPage(1)
               }}
-              placeholder="Search by Student ID or Reference Number..."
+              placeholder="Search by Student ID, Reference Number, or Name..."
               className="w-full rounded-lg border border-[#e7dfd0] bg-white py-2.5 pl-9 pr-4 text-[13px] text-[#1f2d24] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#073b23] focus:ring-2 focus:ring-[#073b23]/15"
             />
             <SearchIcon className="absolute left-3 top-3 size-4 text-[#8a7344]" />
@@ -156,7 +169,7 @@ function RequestTable({
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 text-[11px] font-semibold text-[#8a7344] whitespace-nowrap hidden sm:inline-flex">
               <FilterIcon className="size-3" />
-              Filter by Request Type:
+              Type:
             </span>
             <select
               value={selectedType}
@@ -175,101 +188,176 @@ function RequestTable({
           </div>
 
           {/* Filter by Status Dropdown */}
-          {!activeFilterStatus && (
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-semibold text-[#8a7344] whitespace-nowrap hidden sm:inline">
-                Filter by Status:
-              </span>
-              <select
-                value={selectedStatus}
-                onChange={(e) => {
-                  setSelectedStatus(e.target.value)
-                  setCurrentPage(1)
-                }}
-                className="rounded-lg border border-[#e7dfd0] bg-white px-3 py-2 text-[12px] font-medium text-[#1f2d24] outline-none transition-all focus:border-[#073b23]"
-              >
-                <option value="All Statuses">All Statuses</option>
-                {statusOptions.map((st) => (
-                  <option key={st} value={st}>
-                    {st}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold text-[#8a7344] whitespace-nowrap hidden sm:inline">
+              Status:
+            </span>
+            <select
+              value={selectedStatus}
+              onChange={(e) => {
+                setSelectedStatus(e.target.value)
+                setCurrentPage(1)
+              }}
+              className="rounded-lg border border-[#e7dfd0] bg-white px-3 py-2 text-[12px] font-medium text-[#1f2d24] outline-none transition-all focus:border-[#073b23]"
+            >
+              <option value="All Statuses">All Statuses</option>
+              {statusOptions.map((st) => (
+                <option key={st} value={st}>
+                  {st}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Main Requests Table */}
+      {/* Main Requests Table with Status & Remarks Management */}
       <div className="mt-4 overflow-x-auto">
-        <table className="w-full min-w-[700px] border-collapse text-left text-[12px]">
+        <table className="w-full min-w-[850px] border-collapse text-left text-[12px]">
           <thead>
             <tr className="border-b border-[#eee7da] bg-[#fbf9f5] text-[11px] font-bold uppercase tracking-wider text-[#8a7344]">
               <th className="py-3.5 px-3.5">Ref. No.</th>
               <th className="py-3.5 px-3.5">Student ID</th>
               <th className="py-3.5 px-3.5">Student Name</th>
               <th className="py-3.5 px-3.5">Request Type</th>
-              <th className="py-3.5 px-3.5">Date Submitted</th>
+              <th className="py-3.5 px-3.5">Date</th>
               <th className="py-3.5 px-3.5 text-center">Status</th>
-              <th className="py-3.5 px-3.5 text-right">Action</th>
+              <th className="py-3.5 px-3.5">Remarks</th>
+              <th className="py-3.5 px-3.5 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#f1ede4]">
             {displayedRequests.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-[#7a7a6d]">
+                <td colSpan={8} className="py-12 text-center text-[#7a7a6d]">
                   <p className="text-[14px] font-semibold text-[#1f2d24]">
                     No matching requests found
                   </p>
                   <p className="mt-1 text-[12px]">
                     Try adjusting your search terms or filter criteria.
                   </p>
+                  <button
+                    type="button"
+                    onClick={handleResetFilters}
+                    className="mt-3 rounded-lg border border-[#e7dfd0] bg-white px-3.5 py-1.5 text-[12px] font-bold text-[#073b23] hover:bg-[#f7f3eb]"
+                  >
+                    Clear All Filters
+                  </button>
                 </td>
               </tr>
             ) : (
               displayedRequests.map((req) => {
                 const statusKey = getStatusKey(req.status)
+                const hasRemarks = Boolean(req.remarks && req.remarks.trim())
+
                 return (
                   <tr
                     key={req.ref}
-                    onClick={() => onOpenRequest(req)}
-                    className="cursor-pointer transition-colors duration-150 hover:bg-[#fbf9f5]"
+                    className="transition-colors duration-150 hover:bg-[#fbf9f5]"
                   >
+                    {/* Ref Number */}
                     <td className="py-3.5 px-3.5 font-bold text-[#073b23]">
-                      {req.ref}
+                      <button
+                        type="button"
+                        onClick={() => onOpenRequest(req)}
+                        className="hover:underline text-left font-bold"
+                        title="View details"
+                      >
+                        {req.ref}
+                      </button>
                     </td>
+
+                    {/* Student ID */}
                     <td className="py-3.5 px-3.5 font-mono text-[11px] text-[#5f6f62]">
                       {req.studentId}
                     </td>
+
+                    {/* Student Name */}
                     <td className="py-3.5 px-3.5 font-semibold text-[#1f2d24]">
                       {req.studentName}
                     </td>
+
+                    {/* Request Type */}
                     <td className="py-3.5 px-3.5 text-[#1f2d24]">
                       {req.shortType || req.type}
                     </td>
-                    <td className="py-3.5 px-3.5 text-[#7a7a6d]">
+
+                    {/* Date Submitted */}
+                    <td className="py-3.5 px-3.5 text-[#7a7a6d] whitespace-nowrap">
                       {req.date}
                     </td>
+
+                    {/* Status Management Column: Status Badge with Quick Update action */}
                     <td className="py-3.5 px-3.5 text-center">
-                      <span
-                        className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase ${
+                      <button
+                        type="button"
+                        onClick={() => onOpenUpdateModal && onOpenUpdateModal(req)}
+                        title="Click to update status"
+                        className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold tracking-wide uppercase transition-transform hover:scale-105 active:scale-95 ${
                           statusBadgeClasses[statusKey]
                         }`}
                       >
-                        {req.status}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-3.5 text-right">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onOpenRequest(req)
-                        }}
-                        className="rounded px-2.5 py-1 text-[12px] font-bold text-[#073b23] transition-colors hover:bg-[#e4efe5] hover:underline"
-                      >
-                        [View]
+                        <span>{req.status}</span>
+                        <EditIcon className="size-2.5 opacity-60" />
                       </button>
+                    </td>
+
+                    {/* Remarks Management Column: Organized preview and direct add/edit */}
+                    <td className="py-3.5 px-3.5 max-w-[240px]">
+                      {hasRemarks ? (
+                        <div
+                          onClick={() => onOpenUpdateModal && onOpenUpdateModal(req)}
+                          className="group cursor-pointer rounded-md p-1 -m-1 transition-colors hover:bg-[#edf5ee]"
+                          title="Click to edit remarks"
+                        >
+                          <div className="flex items-start gap-1.5">
+                            <ChatIcon className="size-3.5 shrink-0 text-[#8a7344] mt-0.5" />
+                            <p className="line-clamp-2 text-[11px] leading-snug text-[#1f2d24] group-hover:text-[#073b23]">
+                              {req.remarks}
+                            </p>
+                          </div>
+                          {req.remarksTimestamp && (
+                            <span className="mt-0.5 block text-[9px] text-[#7a7a6d]">
+                              {req.remarksTimestamp}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => onOpenUpdateModal && onOpenUpdateModal(req)}
+                          className="inline-flex items-center gap-1 rounded border border-dashed border-[#ded8cb] px-2 py-0.5 text-[10px] font-semibold text-[#8a7344] hover:border-[#073b23] hover:text-[#073b23]"
+                        >
+                          <span>+ Add Remark</span>
+                        </button>
+                      )}
+                    </td>
+
+                    {/* Actions Column: View Details & Direct Update */}
+                    <td className="py-3.5 px-3.5 text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-1.5">
+                        {/* Update Status & Remarks Button */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenUpdateModal && onOpenUpdateModal(req)}
+                          className="inline-flex items-center gap-1 rounded border border-[#e7dfd0] bg-white px-2.5 py-1 text-[11px] font-bold text-[#073b23] transition-colors hover:bg-[#edf5ee] hover:border-[#073b23]"
+                          title="Update Status & Remarks directly"
+                        >
+                          <EditIcon className="size-3 text-[#8a7344]" />
+                          <span>Update</span>
+                        </button>
+
+                        {/* View Full Details Button */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenRequest(req)}
+                          className="inline-flex items-center gap-1 rounded bg-[#073b23] px-2.5 py-1 text-[11px] font-bold text-white transition-colors hover:bg-[#042916]"
+                          title="View complete request information and audit history"
+                        >
+                          <ViewEyeIcon className="size-3" />
+                          <span>View</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 )

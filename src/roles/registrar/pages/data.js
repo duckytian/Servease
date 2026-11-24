@@ -1,9 +1,6 @@
 import {
   DashboardIcon,
   AllRequestsIcon,
-  PendingIcon,
-  ProcessingIcon,
-  CompletedIcon,
 } from './icons.jsx'
 
 export const registrarStaff = {
@@ -15,11 +12,8 @@ export const registrarStaff = {
 }
 
 export const navigationItems = [
-  { key: 'dashboard', label: 'Dashboard', Icon: DashboardIcon },
-  { key: 'all-requests', label: 'All Requests', Icon: AllRequestsIcon },
-  { key: 'pending', label: 'Pending Requests', Icon: PendingIcon, filterStatus: 'Pending' },
-  { key: 'processing', label: 'Processing Requests', Icon: ProcessingIcon, filterStatus: 'Processing' },
-  { key: 'completed', label: 'Completed Requests', Icon: CompletedIcon, filterStatus: 'Completed' },
+  { key: 'dashboard', label: 'DASHBOARD', Icon: DashboardIcon },
+  { key: 'requests', label: 'REQUESTS', Icon: AllRequestsIcon },
 ]
 
 export const requestTypes = [
