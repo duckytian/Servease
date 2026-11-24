@@ -39,9 +39,14 @@ export const registrarServices = [
 
 export const osasServices = [
   {
-    code: 'STUDENT ID',
-    name: 'Student ID Replacement',
-    description: 'Request a replacement for a lost or damaged student ID.',
+    code: 'LOST ID',
+    name: 'Report Lost Student ID',
+    description: 'Notify OSAS that your student ID has been lost and request assistance with the next steps.',
+  },
+  {
+    code: 'ID REQUEST',
+    name: 'Request for Student ID',
+    description: 'Submit a request for a student ID card.',
   },
   {
     code: 'STATUS',

@@ -3,6 +3,11 @@ import { initialRequestsData } from '../roles/registrar/pages/data.js'
 
 const STORAGE_KEY = 'servease_requests_v1'
 const UPDATE_EVENT = 'servease:requests'
+const receivingOffices = {
+  Registrar: 'Registrar Office',
+  OSAS: 'Office of Student Affairs and Services',
+  'IT Department': 'IT Department',
+}
 
 function formatTimestamp() {
   const now = new Date()
@@ -69,7 +74,7 @@ export function createRequest(details) {
       {
         step: 'Request Submitted',
         time: formatTimestamp(),
-        note: 'Request received by the Registrar Office.',
+        note: `Request received by the ${receivingOffices[details.department] ?? 'service office'}.`,
         status: 'Pending',
       },
     ],
