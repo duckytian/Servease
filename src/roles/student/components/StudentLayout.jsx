@@ -12,7 +12,6 @@ function StudentLayout({
   onCloseNotifications,
   heading,
   description,
-  onNewRequest,
   requests,
   children,
   overlays,
@@ -33,12 +32,7 @@ function StudentLayout({
         />
 
         <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 min-[901px]:px-6 min-[901px]:pb-8 min-[901px]:pt-5">
-          <PageHeader
-            heading={heading}
-            description={description}
-            activeSection={activeSection}
-            onNewRequest={onNewRequest}
-          />
+          <PageHeader heading={heading} description={description} />
 
           {children}
         </main>

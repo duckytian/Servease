@@ -103,7 +103,6 @@ function StudentDashboard({ user, onLogout }) {
       onCloseNotifications={() => setShowNotifications(false)}
       heading={heading}
       description={description}
-      onNewRequest={() => handleNavigate('Registrar')}
       requests={ownRequests}
     >
       {activeSection === 'dashboard' && (
