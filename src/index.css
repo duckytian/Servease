@@ -1,24 +1,58 @@
 @import 'tailwindcss';
 
 :root {
+  /* Strict Color Palette: Green, Beige, White */
   --forest: #073b23;
   --forest-deep: #042916;
   --forest-soft: #0a4b2d;
-  --accent: #d8c39a;
-  --accent-light: #f1e4c8;
-  --white: #ffffff;
-  --text: #263a2f;
-  --muted: #7a7a6d;
+  --forest-vibrant: #15803d;
+  --forest-light: #e4efe5;
+  --forest-tint: #edf5ee;
+  
+  --beige: #f7f3eb;
+  --beige-subtle: #fbf9f5;
+  --beige-light: #f1e4c8;
+  --beige-gold: #8a7344;
+  --beige-dark: #6e5d38;
   --border: #e7dfd0;
-  --font: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+  --border-light: #eee7da;
+  
+  --white: #ffffff;
+  
+  --text: #1f2d24;
+  --text-muted: #6e7368;
+  --muted: #7a7a6d;
+
+  /* Strict Typography: Poppins ExtraBold for Display, Inter for Text */
+  --font-display: 'Poppins', sans-serif;
+  --font-text: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font: var(--font-text);
 
   font-family: var(--font);
   color: var(--text);
-  background: var(--white);
+  background: var(--beige);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use Poppins ExtraBold */
+h1, h2, h3, h4, h5, h6,
+.font-display {
+  font-family: var(--font-display) !important;
+  font-weight: 800 !important;
+}
+
+/* Body, controls, tables, inputs use Inter */
+body, button, input, select, textarea, p, span, td, th, label,
+.font-text {
+  font-family: var(--font-text);
+}
+
+.font-poppins-extrabold {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 800 !important;
 }
 
 * {
@@ -34,11 +68,8 @@ body,
 
 body {
   margin: 0;
-}
-
-button,
-input {
-  font: inherit;
+  background-color: var(--beige);
+  color: var(--text);
 }
 
 button {
@@ -47,16 +78,33 @@ button {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
 }
 
 ::selection {
-  background: rgba(89, 214, 138, 0.28);
+  background: rgba(7, 59, 35, 0.2);
   color: var(--forest-deep);
+}
+
+/* Custom scrollbars in Green/Beige */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--beige);
+}
+::-webkit-scrollbar-thumb {
+  background: #d4ccbd;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--forest-soft);
 }
 
 @media (prefers-reduced-motion: reduce) {

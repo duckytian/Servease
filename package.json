@@ -1,8 +1,10 @@
 {
-  "name": "frontend",
+  "name": "servease-registrar-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "ServeEase Registrar Dashboard & Student Request Management System",
   "type": "module",
+  "main": "src/roles/registrar/RegistrarDashboard.jsx",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
