@@ -2,6 +2,9 @@ import { useState } from 'react'
 import AuthProvider from './auth/AuthContext.jsx'
 import useAuth from './auth/useAuth'
 import { ForgotPasswordPage, LoginHelpPage, SignInPage } from './pages/auth'
+import ITDashboard from './roles/it/ITDashboard.jsx'
+import OSASDashboard from './roles/osas/OSASDashboard.jsx'
+import RegistrarDashboard from './roles/registrar/RegistrarDashboard.jsx'
 import StudentDashboard from './roles/student/StudentDashboard.jsx'
 
 const authPages = {
@@ -10,12 +13,20 @@ const authPages = {
   'sign-in': SignInPage,
 }
 
+const dashboards = {
+  Student: StudentDashboard,
+  Registrar: RegistrarDashboard,
+  IT: ITDashboard,
+  OSAS: OSASDashboard,
+}
+
 function AppContent() {
   const { user, isAuthenticated, signIn, signOut } = useAuth()
   const [authPage, setAuthPage] = useState('sign-in')
 
   if (isAuthenticated) {
-    return <StudentDashboard user={user} onLogout={signOut} />
+    const Dashboard = dashboards[user?.role]
+    return Dashboard ? <Dashboard user={user} onLogout={signOut} /> : null
   }
 
   const AuthPage = authPages[authPage] ?? SignInPage
