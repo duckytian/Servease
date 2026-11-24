@@ -1,68 +1,82 @@
-import { DashboardIcon, DocumentIcon, PeopleIcon, MonitorIcon } from './icons.jsx'
+import { DashboardIcon, DocumentIcon, ListIcon, MonitorIcon, PeopleIcon } from './icons.jsx'
 
-export const student = {
+export const studentProfile = {
   name: 'Juan Dela Cruz',
   id: '2021-1001-MNL',
+  yearLevel: '3rd Year',
+  email: 'juan@email.com',
+  course: 'BSIT',
+  contactNo: '09171234567',
 }
 
-export const initialRequests = [
+export const registrarServices = [
   {
-    ref: 'SER-0012',
-    department: 'Registrar',
-    type: 'COG',
-    date: 'Oct 25, 2023',
-    status: 'Completed',
-    remarks: 'Ready for pickup',
+    code: 'COE',
+    name: 'Certificate of Enrollment (COE)',
+    description: 'Official proof of enrollment for the current academic term.',
   },
   {
-    ref: 'SER-0013',
-    department: 'Student Affairs',
-    type: 'Report Lost ID',
-    date: 'Oct 26, 2023',
-    status: 'Processing',
-    remarks: 'ID processing',
+    code: 'COG',
+    name: 'Certificate of Grades (COG)',
+    description: 'Certified copy of your grades for scholarships and requirements.',
   },
   {
-    ref: 'SER-0014',
-    department: 'IT Department',
-    type: 'Portal Inquiry',
-    date: 'Oct 28, 2023',
-    status: 'Pending',
-    remarks: 'Awaiting review',
+    code: 'COR',
+    name: 'Certificate of Registration (COR)',
+    description: 'Registration record for the academic year and semester.',
   },
   {
-    ref: 'SER-0015',
-    department: 'Registrar',
-    type: 'TOR',
-    date: 'Nov 02, 2023',
-    status: 'Processing',
-    remarks: 'Request queued',
+    code: 'TOR',
+    name: 'Transcript of Records (TOR)',
+    description: 'Complete academic record for transfer, employment, or further study.',
   },
   {
-    ref: 'SER-0016',
-    department: 'Registrar',
-    type: 'Good Moral',
-    date: 'Nov 05, 2023',
-    status: 'Pending',
-    remarks: 'Awaiting approval',
-  },
-  {
-    ref: 'SER-0017',
-    department: 'IT Department',
-    type: 'Request PC',
-    date: 'Nov 06, 2023',
-    status: 'Rejected',
-    remarks: 'Insufficient details',
+    code: 'GOOD MORAL',
+    name: 'Good Moral Certificate',
+    description: 'Certification of good character and student conduct.',
   },
 ]
 
-export const statuses = ['Pending', 'Processing', 'Completed', 'Rejected']
+export const osasServices = [
+  {
+    code: 'STUDENT ID',
+    name: 'Student ID Replacement',
+    description: 'Request a replacement for a lost or damaged student ID.',
+  },
+  {
+    code: 'STATUS',
+    name: 'Certificate of Student Status',
+    description: 'Official confirmation of your enrollment status.',
+  },
+  {
+    code: 'CLEARANCE',
+    name: 'Organization Clearance',
+    description: 'Clearance for student organization activities and events.',
+  },
+]
 
-export const emptyRequest = {
-  department: 'Registrar',
-  type: '',
-  details: '',
-  date: '',
+export const itServices = [
+  {
+    code: 'ACCOUNT',
+    name: 'Portal Account Reset',
+    description: 'Reset your ServEase portal password or recover access.',
+  },
+  {
+    code: 'WIFI',
+    name: 'Campus Wi-Fi Access',
+    description: 'Request access credentials for the campus network.',
+  },
+  {
+    code: 'WORKSTATION',
+    name: 'Lab Workstation Request',
+    description: 'Reserve a workstation for a lab session or project.',
+  },
+]
+
+export const departmentServices = {
+  Registrar: registrarServices,
+  OSAS: osasServices,
+  'IT Department': itServices,
 }
 
 export const navigation = [
@@ -70,47 +84,26 @@ export const navigation = [
   { key: 'Registrar', label: 'Registrar', Icon: DocumentIcon },
   { key: 'OSAS', label: 'Student Affairs (OSAS)', Icon: PeopleIcon },
   { key: 'IT Department', label: 'IT Department', Icon: MonitorIcon },
+  { key: 'my-requests', label: 'My Requests', Icon: ListIcon },
 ]
 
-export const departmentFilters = {
-  Registrar: 'Registrar',
-  OSAS: 'Student Affairs',
-  'IT Department': 'IT Department',
-}
+export const statuses = ['Pending', 'Processing', 'Completed', 'Rejected']
 
-export const departmentTitles = {
-  Registrar: 'Registrar Requests',
-  OSAS: 'Student Affairs Requests',
-  'IT Department': 'IT Department Requests',
-}
-
-export const notifications = [
-  {
-    title: 'Request completed',
-    message: 'SER-0012 · COG is ready for pickup at the Registrar.',
-    time: 'Nov 06, 2023',
-    status: 'Completed',
-  },
-  {
-    title: 'Request rejected',
-    message: 'SER-0017 · Request PC needs additional details.',
-    time: 'Nov 06, 2023',
-    status: 'Rejected',
-  },
-  {
-    title: 'Request in progress',
-    message: 'SER-0015 · TOR is now queued for processing.',
-    time: 'Nov 02, 2023',
-    status: 'Processing',
-  },
-  {
-    title: 'Request received',
-    message: 'SER-0016 · Good Moral is awaiting approval.',
-    time: 'Nov 05, 2023',
-    status: 'Pending',
-  },
+export const requestSteps = [
+  'Request Submitted',
+  'Under Review',
+  'Ready for Release',
+  'Completed',
 ]
 
 export function statusClass(status) {
-  return status.toLowerCase()
+  return String(status ?? '').toLowerCase()
+}
+
+export function formatDate(value = new Date()) {
+  return value.toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  })
 }

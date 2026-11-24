@@ -92,6 +92,23 @@ export function CheckIcon(props) {
   )
 }
 
+export function ChatIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path d="M20 12a7.5 7.5 0 0 1-7.5 7.5H7l-3 2V12A7.5 7.5 0 0 1 11.5 4.5 7.5 7.5 0 0 1 20 12Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M9 11h7M9 14.5h4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function ArrowRightIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export function LogoutIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="none" {...props}>

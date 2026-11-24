@@ -13,6 +13,7 @@ function StudentLayout({
   heading,
   description,
   onNewRequest,
+  requests,
   children,
   overlays,
 }) {
@@ -28,9 +29,10 @@ function StudentLayout({
           showNotifications={showNotifications}
           onToggleNotifications={onToggleNotifications}
           onCloseNotifications={onCloseNotifications}
+          requests={requests}
         />
 
-        <main className="mx-auto w-full max-w-[1400px] px-5 pb-11 pt-6 min-[901px]:px-9 min-[901px]:pb-[52px] min-[901px]:pt-8">
+        <main className="mx-auto w-full max-w-[1600px] px-4 pb-8 pt-4 min-[901px]:px-6 min-[901px]:pb-8 min-[901px]:pt-5">
           <PageHeader
             heading={heading}
             description={description}

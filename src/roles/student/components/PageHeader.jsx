@@ -3,7 +3,7 @@ import { PlusIcon } from '../pages/icons.jsx'
 
 function PageHeader({ heading, description, activeSection, onNewRequest }) {
   return (
-    <div className="mb-7 flex flex-col items-stretch gap-5 min-[641px]:flex-row min-[641px]:items-start min-[641px]:justify-between">
+    <div className="mb-5 flex flex-col items-stretch gap-4 min-[641px]:flex-row min-[641px]:items-start min-[641px]:justify-between">
       <div>
         <p className={eyebrowClass}>Student Dashboard</p>
         <h1 className="text-[20px] font-bold leading-[1.35] text-[var(--text)] min-[641px]:text-[24px]">{heading}</h1>

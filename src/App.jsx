@@ -5,7 +5,7 @@ import { ForgotPasswordPage, LoginHelpPage, SignInPage } from './pages/auth'
 import ITDashboard from './roles/it/ITDashboard.jsx'
 import OSASDashboard from './roles/osas/OSASDashboard.jsx'
 import RegistrarDashboard from './roles/registrar/RegistrarDashboard.jsx'
-import StudentDashboard from './roles/student/StudentDashboard.jsx'
+import StudentDashboard from './roles/student/pages/dashboard/StudentDashboard.jsx'
 
 const authPages = {
   'forgot-password': ForgotPasswordPage,

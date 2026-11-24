@@ -1,33 +1,23 @@
-import { eyebrowClass, statusDotClass, statusDotClasses, topNavButtonClass } from '../pages/classes.js'
-import { notifications, statusClass, student } from '../pages/data.js'
+import { eyebrowClass, statusDotClass, statusDotClasses } from '../pages/classes.js'
+import { statusClass, studentProfile } from '../pages/data.js'
 import { BellIcon } from '../pages/icons.jsx'
 
-function StudentTopbar({ activeSection, user, onNavigate, showNotifications, onToggleNotifications, onCloseNotifications }) {
+function StudentTopbar({ user, showNotifications, onToggleNotifications, onCloseNotifications, requests = [] }) {
+  const notifications = requests.slice(0, 5).map((request) => ({
+    title: `${request.status} request`,
+    message: `${request.ref} · ${request.shortType || request.type}`,
+    time: request.date,
+    status: request.status,
+  }))
+
   return (
     <header className="sticky top-0 z-10 flex min-h-[72px] items-center justify-between gap-5 border-b border-[var(--border)] bg-white px-5 min-[901px]:px-9">
-      <nav className="flex items-center gap-[26px] self-stretch" aria-label="Primary navigation">
-        <button
-          className={`${topNavButtonClass} ${activeSection === 'dashboard' ? 'text-[var(--forest)] after:bg-[var(--forest)]' : ''}`}
-          type="button"
-          onClick={() => onNavigate('dashboard')}
-        >
-          Dashboard
-        </button>
-        <button
-          className={`${topNavButtonClass} ${activeSection === 'my-requests' ? 'text-[var(--forest)] after:bg-[var(--forest)]' : ''}`}
-          type="button"
-          onClick={() => onNavigate('my-requests')}
-        >
-          My Requests
-        </button>
-      </nav>
-
       <div className="ml-auto flex items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="grid size-[38px] shrink-0 place-items-center rounded-full border-2 border-[#e7dcc3] bg-[var(--forest)] text-[12px] font-bold text-white" aria-hidden="true">JD</div>
           <div className="hidden min-[641px]:block">
-            <p className="text-[12px] font-bold text-[var(--text)]">Welcome! {student.name}</p>
-            <p className="mt-[3px] text-[10px] text-[var(--muted)]">Student ID: {user?.userId ?? student.id}</p>
+            <p className="text-[12px] font-bold text-[var(--text)]">Welcome! {studentProfile.name}</p>
+            <p className="mt-[3px] text-[10px] text-[var(--muted)]">Student ID: {user?.userId ?? studentProfile.id}</p>
           </div>
 
           <div className="relative">
@@ -40,7 +30,9 @@ function StudentTopbar({ activeSection, user, onNavigate, showNotifications, onT
               onClick={onToggleNotifications}
             >
               <BellIcon />
-              <span className="absolute -right-[6px] -top-[6px] grid size-[18px] place-items-center rounded-full border-2 border-white bg-[#d92d20] text-[9px] font-bold leading-none text-white">{notifications.length}</span>
+              {notifications.length > 0 && (
+                <span className="absolute -right-[6px] -top-[6px] grid size-[18px] place-items-center rounded-full border-2 border-white bg-[#d92d20] text-[9px] font-bold leading-none text-white">{notifications.length}</span>
+              )}
             </button>
 
             {showNotifications && (
@@ -61,16 +53,22 @@ function StudentTopbar({ activeSection, user, onNavigate, showNotifications, onT
                 </div>
 
                 <ul className="max-h-[320px] overflow-y-auto p-0">
-                  {notifications.map((item) => (
-                    <li className="flex items-start gap-3 border-t border-[#eee9dc] py-[15px] first:border-t-0 first:pt-0" key={item.title}>
-                      <span className={`${statusDotClass} mt-[5px] ${statusDotClasses[statusClass(item.status)]}`} />
-                      <div className="flex-1">
-                        <p className="text-[12px] font-bold text-[var(--text)]">{item.title}</p>
-                        <p className="mt-1 text-[11px] leading-[1.5] text-[var(--muted)]">{item.message}</p>
-                      </div>
-                      <time className="shrink-0 text-[10px] whitespace-nowrap text-[var(--muted)]">{item.time}</time>
+                  {notifications.length === 0 ? (
+                    <li className="py-4 text-center text-[12px] text-[var(--muted)]">
+                      No request updates yet.
                     </li>
-                  ))}
+                  ) : (
+                    notifications.map((item) => (
+                      <li className="flex items-start gap-3 border-t border-[#eee9dc] py-[15px] first:border-t-0 first:pt-0" key={item.message}>
+                        <span className={`${statusDotClass} mt-[5px] ${statusDotClasses[statusClass(item.status)]}`} />
+                        <div className="flex-1">
+                          <p className="text-[12px] font-bold text-[var(--text)]">{item.title}</p>
+                          <p className="mt-1 text-[11px] leading-[1.5] text-[var(--muted)]">{item.message}</p>
+                        </div>
+                        <time className="shrink-0 text-[10px] whitespace-nowrap text-[var(--muted)]">{item.time}</time>
+                      </li>
+                    ))
+                  )}
                 </ul>
               </div>
             )}
