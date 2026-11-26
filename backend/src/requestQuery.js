@@ -14,7 +14,6 @@ const BASE = `
   JOIN services s ON s.id = r.service_id
   JOIN users st ON st.id = r.student_id`
 
-// Hugis na eksaktong ginagamit ng React components (date, statusHistory[{step,time,note,status}], atbp.)
 function shape(r, history = []) {
   return {
     id: r.id, ref: r.ref, department: r.department, status: r.status,
