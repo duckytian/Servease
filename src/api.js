@@ -15,7 +15,6 @@ export async function api(path, { method = 'GET', body } = {}) {
   return data
 }
 
-// Login: ise-save ang token, ibabalik ang user { id, userId, name, role, ... }
 export async function loginRequest(userId, password) {
   const { token, user } = await api('/auth/login', { method: 'POST', body: { userId, password } })
   sessionStorage.setItem('token', token)
