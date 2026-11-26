@@ -1,4 +1,4 @@
--- BABALA: buburahin nito ang lumang servease tables (para sa bagong schema)
+
 CREATE DATABASE IF NOT EXISTS servease CHARACTER SET utf8mb4;
 USE servease;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -10,7 +10,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id VARCHAR(50) NOT NULL UNIQUE,        -- Student ID o Staff ID (login)
+  user_id VARCHAR(50) NOT NULL UNIQUE,      
   full_name VARCHAR(120) NOT NULL,
   email VARCHAR(120) NOT NULL UNIQUE,
   contact_number VARCHAR(20),
@@ -32,17 +32,17 @@ CREATE TABLE services (
 
 CREATE TABLE requests (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  ref VARCHAR(30) UNIQUE,                      -- SER-0001
+  ref VARCHAR(30) UNIQUE,                     
   department ENUM('osas','it','registrar') NOT NULL,
   student_id INT NOT NULL,
   service_id INT NOT NULL,
   academic_year VARCHAR(20),
   semester VARCHAR(30),
   purpose TEXT NOT NULL,
-  additional_remarks TEXT,                     -- galing sa student form
+  additional_remarks TEXT,                     
   status ENUM('Pending','Processing','Completed','Rejected') NOT NULL DEFAULT 'Pending',
-  assigned_staff VARCHAR(120),                 -- free text sa Update modal
-  remarks TEXT,                                -- OSAS remarks
+  assigned_staff VARCHAR(120),                 
+  remarks TEXT,                             
   remarks_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -54,7 +54,7 @@ CREATE TABLE requests (
 CREATE TABLE request_status_history (
   id INT AUTO_INCREMENT PRIMARY KEY,
   request_id INT NOT NULL,
-  step VARCHAR(80) NOT NULL,                   -- "Request Under Review"
+  step VARCHAR(80) NOT NULL,                
   status ENUM('Pending','Processing','Completed','Rejected') NOT NULL,
   note TEXT,
   updated_by INT NOT NULL,
