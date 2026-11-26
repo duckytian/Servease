@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useRequests } from '../../../../data/requestStore.js'
+import { updateOsasStatus, useOsasRequests } from '../../../../data/osasApi.js'
 import OSASLayout from '../../components/OSASLayout.jsx'
 import DashboardOverview from './DashboardOverview.jsx'
 import RequestDetails from './RequestDetails.jsx'
@@ -8,7 +8,7 @@ import UpdateStatusModal from './UpdateStatusModal.jsx'
 
 function OSASDashboard({ user, onLogout }) {
   const [activeNav, setActiveNav] = useState('dashboard')
-  const [allRequests, setAllRequests] = useRequests()
+  const { requests: allRequests, error: loadError, reload } = useOsasRequests()
   const [selectedRequest, setSelectedRequest] = useState(null)
   const [updatingRequest, setUpdatingRequest] = useState(null)
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -17,6 +17,10 @@ function OSASDashboard({ user, onLogout }) {
     () => allRequests.filter((request) => request.department?.toLowerCase() === 'osas'),
     [allRequests],
   )
+
+  useEffect(() => {
+    if (loadError) setToastMessage(loadError)
+  }, [loadError])
 
   useEffect(() => {
     if (!toastMessage) return
@@ -47,47 +51,17 @@ function OSASDashboard({ user, onLogout }) {
     rejected: 'Rejected',
   }[activeNav] ?? null
 
-  const handleSaveStatusUpdate = ({ ref, newStatus, remarks, assignedStaff }) => {
-    const now = new Date()
-    const time = `${now.toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    })} ${now.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    })}`
-
-    const updatedAllRequests = allRequests.map((request) => {
-      if (request.ref !== ref) return request
-      const step =
-        newStatus === 'Completed'
-          ? 'Service Fulfilled'
-          : newStatus === 'Rejected'
-            ? 'Request Declined'
-            : newStatus === 'Processing'
-              ? 'Request Under Review'
-              : 'Status Updated'
-      return {
-        ...request,
-        status: newStatus,
-        remarks,
-        remarksTimestamp: time,
-        assignedStaff,
-        statusHistory: [
-          ...(request.statusHistory || []),
-          { step, time, note: remarks, status: newStatus },
-        ],
-      }
-    })
-
-    setAllRequests(updatedAllRequests)
-    const updated = updatedAllRequests.find((request) => request.ref === ref)
-    if (selectedRequest?.ref === ref && updated) setSelectedRequest(updated)
-
-    setIsUpdateModalOpen(false)
-    setUpdatingRequest(null)
-    setToastMessage(`OSAS request ${ref} updated to "${newStatus}".`)
+  const handleSaveStatusUpdate = async ({ ref, newStatus, remarks, assignedStaff }) => {
+    try {
+      const updated = await updateOsasStatus(ref, { newStatus, remarks, assignedStaff })
+      await reload()
+      if (selectedRequest?.ref === ref) setSelectedRequest(updated)
+      setIsUpdateModalOpen(false)
+      setUpdatingRequest(null)
+      setToastMessage(`OSAS request ${ref} updated to "${newStatus}".`)
+    } catch (err) {
+      setToastMessage(`Not saved: ${err.message}`)
+    }
   }
 
   const handleNavigate = (navKey) => {
@@ -119,7 +93,7 @@ function OSASDashboard({ user, onLogout }) {
           )}
           {toastMessage && (
             <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl border border-[#bbf7d0] bg-[#073b23] px-4 py-3 text-[13px] font-semibold text-white shadow-xl">
-              <span className="grid size-6 place-items-center rounded-full bg-[#16a34a]">&check;</span>
+              <span className="grid size-6 place-items-center rounded-full bg-[#16a34a]">✓</span>
               <span>{toastMessage}</span>
               <button type="button" onClick={() => setToastMessage(null)} className="ml-2 text-white/70 hover:text-white" aria-label="Dismiss notification">&times;</button>
             </div>

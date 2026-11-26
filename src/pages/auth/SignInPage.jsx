@@ -10,6 +10,7 @@ import {
   selectClass,
 } from '../../components/auth/authClasses'
 import AuthLayout from '../../components/layout/AuthLayout.jsx'
+import { clearSession, loginRequest } from '../../api.js'
 
 const userIdPattern = /^[A-Za-z0-9-]{6,20}$/
 const roleIdNames = {
@@ -45,18 +46,21 @@ function SignInPage({ onSignIn, onNavigate }) {
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [serverError, setServerError] = useState('')
 
   const handleChange = (event) => {
     const { name, value } = event.target
     const nextValues = { ...values, [name]: value }
     setValues(nextValues)
+    setServerError('')
 
     if (submitted) {
       setErrors(validate(nextValues))
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     setSubmitted(true)
 
@@ -67,7 +71,39 @@ function SignInPage({ onSignIn, onNavigate }) {
       return
     }
 
-    onSignIn({ role: values.role, userId: values.userId.trim() })
+    const userId = values.userId.trim()
+
+    // Registrar at IT: luma pa ring flow (wala pang backend account)
+    if (values.role !== 'Student' && values.role !== 'OSAS') {
+      onSignIn({ role: values.role, userId })
+      return
+    }
+
+    // Student at OSAS: totoong login sa backend (kumukuha ng token)
+    setLoading(true)
+    setServerError('')
+    try {
+      const account = await loginRequest(userId, values.password)
+      if (account.role.toLowerCase() !== values.role.toLowerCase()) {
+        clearSession()
+        setServerError(`This is not a ${values.role} account. Choose the correct user portal.`)
+        return
+      }
+      onSignIn({
+        role: values.role,
+        userId: account.userId,
+        id: account.id,
+        name: account.name,
+        email: account.email,
+        course: account.course,
+        yearLevel: account.yearLevel,
+        contactNumber: account.contactNumber,
+      })
+    } catch (err) {
+      setServerError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -159,8 +195,14 @@ function SignInPage({ onSignIn, onNavigate }) {
           )}
         </div>
 
-        <button className={authButtonClass} type="submit">
-          LOGIN
+        {serverError && (
+          <p role="alert" className={fieldErrorClass}>
+            {serverError}
+          </p>
+        )}
+
+        <button className={authButtonClass} type="submit" disabled={loading}>
+          {loading ? 'SIGNING IN...' : 'LOGIN'}
         </button>
       </form>
     </AuthLayout>
