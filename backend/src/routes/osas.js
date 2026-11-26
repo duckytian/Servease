@@ -15,7 +15,6 @@ router.get('/summary', async (req, res) => {
   res.json({ total: Object.values(counts).reduce((a, b) => a + b, 0), ...counts })
 })
 
-// Lahat ng OSAS requests (kasama ang statusHistory). Filtering ay ginagawa ng React.
 router.get('/requests', async (req, res) => {
   res.json(await q.list({ where: "WHERE r.department = 'osas'" }))
 })
@@ -25,7 +24,6 @@ router.get('/requests/:ref', async (req, res) => {
   r ? res.json(r) : res.status(404).json({ message: 'Not found' })
 })
 
-// body: { status, remarks, assignedStaff }
 router.patch('/requests/:ref/status', async (req, res) => {
   const conn = await db.getConnection()
   try {
