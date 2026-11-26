@@ -1,4 +1,4 @@
-// I-run: npm run seed  (gagawa ng demo accounts na may tamang password hash)
+
 require('dotenv').config()
 const bcrypt = require('bcryptjs')
 const db = require('./src/db')
