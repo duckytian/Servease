@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '../api.js'
 
-// ---- OSAS staff ----
+// OSAS staff 
 export function useOsasRequests(pollMs = 15000) {
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
@@ -20,7 +20,7 @@ export function useOsasRequests(pollMs = 15000) {
 
   useEffect(() => {
     reload()
-    const timer = setInterval(reload, pollMs) // lalabas agad ang bagong request galing student
+    const timer = setInterval(reload, pollMs)
     return () => clearInterval(timer)
   }, [reload, pollMs])
 
@@ -33,14 +33,12 @@ export const updateOsasStatus = (ref, { newStatus, remarks, assignedStaff }) =>
     body: { status: newStatus, remarks, assignedStaff },
   })
 
-// ---- Student ----
-// details: { type, academicYear, semester, purpose, additionalRemarks }
+// Student 
 export const submitOsasRequest = (details) =>
   api('/requests', { method: 'POST', body: { department: 'osas', ...details } })
 
 export const fetchMyRequests = () => api('/requests/mine')
 
-// Mga request ng naka-login na student (OSAS). Nag-a-update bawat 15s para makita ang bagong status.
 export function useMyOsasRequests(pollMs = 15000) {
   const [requests, setRequests] = useState([])
   const [error, setError] = useState('')
