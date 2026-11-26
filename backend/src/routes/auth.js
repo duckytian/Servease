@@ -23,7 +23,6 @@ router.post('/login', async (req, res) => {
   } catch (e) { console.error(e); res.status(500).json({ message: 'Server error' }) }
 })
 
-// Laging 'student' ang bagong account. Ang staff accounts ay gawa sa seed/database.
 router.post('/register', async (req, res) => {
   try {
     const { userId, fullName, email, password, contactNumber, course, yearLevel } = req.body
