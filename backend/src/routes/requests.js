@@ -24,7 +24,6 @@ router.get('/:ref', async (req, res) => {
   r ? res.json(r) : res.status(404).json({ message: 'Not found' })
 })
 
-// body: { department, type (service name) | serviceId, academicYear, semester, purpose, additionalRemarks }
 router.post('/', async (req, res) => {
   const conn = await db.getConnection()
   try {
