@@ -7,7 +7,7 @@ const fmtTime = (d) => d ? `${fmtDate(d)} ${new Date(d).toLocaleTimeString('en-U
 const BASE = `
   SELECT r.id, r.ref, r.department, r.status, r.academic_year, r.semester, r.purpose,
          r.additional_remarks, r.assigned_staff, r.remarks, r.remarks_at, r.created_at,
-         s.name AS type,
+         s.name AS type, s.code AS shortType,
          st.user_id AS studentId, st.full_name AS studentName, st.email,
          st.contact_number AS contactNo, st.course, st.year_level AS yearLevel
   FROM requests r
@@ -17,7 +17,7 @@ const BASE = `
 function shape(r, history = []) {
   return {
     id: r.id, ref: r.ref, department: r.department, status: r.status,
-    type: r.type,
+    type: r.type, shortType: r.shortType || '',
     studentId: r.studentId, studentName: r.studentName, course: r.course,
     yearLevel: r.yearLevel, email: r.email, contactNo: r.contactNo,
     academicYear: r.academic_year, semester: r.semester, purpose: r.purpose,

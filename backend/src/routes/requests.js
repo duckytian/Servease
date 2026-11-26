@@ -4,18 +4,25 @@ const db = require('../db')
 const { auth, requireRole } = require('../middleware/auth')
 const q = require('../requestQuery')
 
+const DEPARTMENTS = ['osas', 'registrar', 'it']
+
 router.use(auth, requireRole('student'))
 
 router.get('/services', async (req, res) => {
+  const department = req.query.department || 'osas'
+  if (!DEPARTMENTS.includes(department)) return res.status(400).json({ message: 'Invalid department' })
   const [rows] = await db.query(
-    'SELECT id, name, description FROM services WHERE department = ? AND is_active = 1',
-    [req.query.department || 'osas'])
+    'SELECT id, name, code, description FROM services WHERE department = ? AND is_active = 1',
+    [department])
   res.json(rows)
 })
 
 router.get('/mine', async (req, res) => {
   const params = [req.user.id]; let where = 'WHERE r.student_id = ?'
-  if (req.query.department) { where += ' AND r.department = ?'; params.push(req.query.department) }
+  if (req.query.department) {
+    if (!DEPARTMENTS.includes(req.query.department)) return res.status(400).json({ message: 'Invalid department' })
+    where += ' AND r.department = ?'; params.push(req.query.department)
+  }
   res.json(await q.list({ where, params }))
 })
 
@@ -28,6 +35,7 @@ router.post('/', async (req, res) => {
   const conn = await db.getConnection()
   try {
     const { department = 'osas', serviceId, type, academicYear, semester, purpose, additionalRemarks } = req.body
+    if (!DEPARTMENTS.includes(department)) return res.status(400).json({ message: 'Invalid department' })
     if (!purpose || !purpose.trim()) return res.status(400).json({ message: 'Purpose is required' })
     const [svc] = serviceId
       ? await conn.query('SELECT * FROM services WHERE id = ? AND department = ?', [serviceId, department])
