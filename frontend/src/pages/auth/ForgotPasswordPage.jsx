@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import ServEaseMark from '../../components/ServEaseMark'
+import ServEaseMark from '../../components/ServEaseMark.jsx'
 import {
   authButtonClass,
   authTextButtonClass,
@@ -7,7 +7,7 @@ import {
   fieldLabelClass,
   inputClass,
   inputErrorClass,
-} from '../../components/auth/authClasses'
+} from '../../components/auth/authClasses.js'
 import AuthLayout from '../../components/layout/AuthLayout.jsx'
 
 function ForgotPasswordPage({ onNavigate }) {
