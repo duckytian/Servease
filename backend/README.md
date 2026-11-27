@@ -6,7 +6,7 @@
 4. `npm run seed`   (gagawa ng demo accounts)
 5. `npm run dev`    -> http://localhost:5000/api/health
 
-Demo login:  OSAS: OSAS-001 / osas123   |   Student: 2023-00001 / student123
+Demo login:  OSAS: OSAS-001 / osas123   |   Registrar: REG-001 / registrar123   |   IT: IT-001 / it1234   |   Student: 2023-00001 / student123
 
 ## Endpoints
 POST /api/auth/login {userId,password} | POST /api/auth/register | GET /api/auth/me

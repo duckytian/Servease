@@ -2,6 +2,7 @@ import {registrarStaff} from '../pages/data.js';
 import {InfoIcon, StudentPortalIcon} from '../pages/icons.jsx';
 
 function RegistrarTopbar({
+  user,
   activeNav,
   onNavigate,
   onOpenTechStackModal,
@@ -12,7 +13,7 @@ function RegistrarTopbar({
       {/* Welcome Title */}
       <div className="flex flex-col">
         <h1 className="font-display text-[19px] font-extrabold tracking-tight text-[#073B23] leading-tight sm:text-[21px]">
-          Welcome, {registrarStaff.name}!
+          Welcome, {user?.name ?? registrarStaff.name}!
         </h1>
         <p className="text-[12px] font-medium text-[#77786F]">
           {registrarStaff.office} &bull; Student Service Request Management

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useRequests } from '../../../../data/requestStore.js'
+import { updateStatus, useDeptRequests } from '../../../../data/requestsApi.js'
 import ITLayout from '../../components/ITLayout.jsx'
 import DashboardOverview from './dashboardOverview.jsx'
 import RequestDetails from '../RequestDetails.jsx'
@@ -8,7 +8,9 @@ import UpdateStatusModal from '../UpdateStatusModal.jsx'
 
 function ITDashboard({ user, onLogout }) {
   const [activeNav, setActiveNav] = useState('dashboard')
-  const [requests, setRequests] = useRequests()
+  const { requests: apiRequests, reload: reloadRequests } = useDeptRequests('it')
+  const [requests, setRequests] = useState(apiRequests)
+  useEffect(() => { setRequests(apiRequests) }, [apiRequests])
   const [selectedRequest, setSelectedRequest] = useState(null)
   const [updatingRequest, setUpdatingRequest] = useState(null)
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -29,7 +31,7 @@ function ITDashboard({ user, onLogout }) {
   }, [])
 
   const statusCounts = useMemo(() => {
-    const counts = { Pending: 0, Processing: 0, Completed: 0 }
+    const counts = { Pending: 0, Processing: 0, Completed: 0, Rejected: 0 }
     requests.forEach((request) => {
       if (counts[request.status] !== undefined) counts[request.status]++
     })
@@ -50,45 +52,17 @@ function ITDashboard({ user, onLogout }) {
     setSelectedRequest(null)
   }
 
-  const handleSaveStatusUpdate = ({ ref, newStatus, remarks, technician }) => {
-    const now = new Date()
-    const time = `${now.toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    })} ${now.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    })}`
-
-    const updatedRequests = requests.map((item) => {
-      if (item.ref !== ref) return item
-      const step =
-        newStatus === 'Completed'
-          ? 'Issue Resolved'
-          : newStatus === 'Processing'
-            ? 'Assigned for Technical Processing'
-            : 'Status Updated'
-      return {
-        ...item,
-        status: newStatus,
-        remarks,
-        remarksTimestamp: time,
-        technician: technician || item.technician || '',
-        statusHistory: [
-          ...(item.statusHistory || []),
-          { step, time, note: remarks, status: newStatus },
-        ],
-      }
-    })
-
-    setRequests(updatedRequests)
-    const updated = updatedRequests.find((item) => item.ref === ref)
-    if (selectedRequest?.ref === ref && updated) setSelectedRequest(updated)
-
-    setIsUpdateModalOpen(false)
-    setUpdatingRequest(null)
-    setToastMessage(`Request ${ref} updated to "${newStatus}".`)
+  const handleSaveStatusUpdate = async ({ ref, newStatus, remarks, technician }) => {
+    try {
+      const updated = await updateStatus('it', ref, { newStatus, remarks, assignedStaff: technician || updatingRequest?.assignedStaff })
+      await reloadRequests()
+      if (selectedRequest?.ref === ref) setSelectedRequest(updated)
+      setIsUpdateModalOpen(false)
+      setUpdatingRequest(null)
+      setToastMessage(`Request ${ref} updated to "${newStatus}".`)
+    } catch (err) {
+      setToastMessage(`Not saved: ${err.message}`)
+    }
   }
 
   return (

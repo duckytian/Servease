@@ -73,13 +73,7 @@ function SignInPage({ onSignIn, onNavigate }) {
 
     const userId = values.userId.trim()
 
-    // Registrar at IT: luma pa ring flow (wala pang backend account)
-    if (values.role !== 'Student' && values.role !== 'OSAS') {
-      onSignIn({ role: values.role, userId })
-      return
-    }
-
-    // Student at OSAS: totoong login sa backend (kumukuha ng token)
+    // All roles now authenticate against the backend.
     setLoading(true)
     setServerError('')
     try {

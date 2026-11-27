@@ -65,15 +65,13 @@ CREATE TABLE request_status_history (
   FOREIGN KEY (updated_by) REFERENCES users(id)
 );
 
+-- Spec-aligned service catalog (SERVEASE overview).
 INSERT INTO services (department, name, code, description) VALUES
+ ('osas','Report Lost Student ID','LOST ID','Report a lost student ID and start the replacement process.'),
  ('osas','Student ID Replacement','STUDENT ID','Request a replacement for a lost or damaged student ID.'),
- ('osas','Certificate of Student Status','STATUS','Official confirmation of your enrollment status.'),
- ('osas','Organization Clearance','CLEARANCE','Clearance for student organization activities and events.'),
  ('registrar','Certificate of Enrollment (COE)','COE','Official proof of enrollment for the current academic term.'),
  ('registrar','Certificate of Grades (COG)','COG','Certified copy of your grades for scholarships and requirements.'),
- ('registrar','Certificate of Registration (COR)','COR','Registration record for the academic year and semester.'),
  ('registrar','Transcript of Records (TOR)','TOR','Complete academic record for transfer, employment, or further study.'),
  ('registrar','Good Moral Certificate','GOOD MORAL','Certification of good character and student conduct.'),
- ('it','Portal Account Reset','ACCOUNT','Reset your ServEase portal password or recover access.'),
- ('it','Campus Wi-Fi Access','WIFI','Request access credentials for the campus network.'),
- ('it','Lab Workstation Request','WORKSTATION','Reserve a workstation for a lab session or project.');
+ ('it','Student Portal Assistance','PORTAL','Assistance with student portal access and account issues.'),
+ ('it','Computer Lab Request','LAB','Request access or resources for the computer lab.');

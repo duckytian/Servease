@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useRequests } from '../../data/requestStore.js'
+import { updateStatus, useDeptRequests } from '../../data/requestsApi.js'
 import RegistrarLayout from './components/RegistrarLayout.jsx'
 import DashboardOverview from './pages/DashboardOverview.jsx'
 import RequestDetails from './pages/RequestDetails.jsx'
@@ -8,11 +8,13 @@ import StudentPortalView from './pages/StudentPortalView.jsx'
 import TechStackAndWorkflowModal from './pages/TechStackAndWorkflowModal.jsx'
 import UpdateStatusModal from './pages/UpdateStatusModal.jsx'
 
-function RegistrarDashboard({ initialView = 'dashboard', onLogout }) {
+function RegistrarDashboard({ user, initialView = 'dashboard', onLogout }) {
   // Navigation states: 'dashboard', 'all-requests', 'pending', 'processing', 'completed', 'student-view'
   const [activeNav, setActiveNav] = useState(initialView)
 
-  const [requests, setRequests] = useRequests()
+  const { requests: apiRequests, reload: reloadRequests } = useDeptRequests('registrar')
+  const [requests, setRequests] = useState(apiRequests)
+  useEffect(() => { setRequests(apiRequests) }, [apiRequests])
 
   // Selected request for details view
   const [selectedRequest, setSelectedRequest] = useState(null)
@@ -49,7 +51,7 @@ function RegistrarDashboard({ initialView = 'dashboard', onLogout }) {
 
   // Calculate status counts dynamically
   const statusCounts = useMemo(() => {
-    const counts = { Pending: 0, Processing: 0, Completed: 0 }
+    const counts = { Pending: 0, Processing: 0, Completed: 0, Rejected: 0 }
     requests.forEach((req) => {
       const st = req.status
       if (counts[st] !== undefined) {
@@ -88,59 +90,17 @@ function RegistrarDashboard({ initialView = 'dashboard', onLogout }) {
   }
 
   // Handle saving status and remarks update
-  const handleSaveStatusUpdate = ({ ref, newStatus, remarks }) => {
-    const now = new Date()
-    const timeFormatted = now.toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    }) + ' ' + now.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-
-    setRequests((prev) =>
-      prev.map((item) => {
-        if (item.ref !== ref) return item
-
-        // Create new step in status history
-        const newStepTitle =
-          newStatus === 'Completed'
-            ? 'Document Ready & Released'
-            : newStatus === 'Processing'
-              ? 'Under Active Processing'
-              : 'Status Updated'
-
-        const updatedHistory = [
-          ...(item.statusHistory || []),
-          {
-            step: newStepTitle,
-            time: timeFormatted,
-            note: remarks,
-            status: newStatus,
-          },
-        ]
-
-        const updated = {
-          ...item,
-          status: newStatus,
-          remarks: remarks,
-          remarksTimestamp: timeFormatted,
-          statusHistory: updatedHistory,
-        }
-
-        // If this is currently selected in request details, keep it in sync
-        if (selectedRequest && selectedRequest.ref === ref) {
-          setSelectedRequest(updated)
-        }
-
-        return updated
-      })
-    )
-
-    setIsUpdateModalOpen(false)
-    setUpdatingRequest(null)
-    showToast(`Request ${ref} status updated to "${newStatus}" and remarks saved.`)
+  const handleSaveStatusUpdate = async ({ ref, newStatus, remarks }) => {
+    try {
+      const updated = await updateStatus('registrar', ref, { newStatus, remarks, assignedStaff: updatingRequest?.assignedStaff || '' })
+      await reloadRequests()
+      if (selectedRequest && selectedRequest.ref === ref) setSelectedRequest(updated)
+      setIsUpdateModalOpen(false)
+      setUpdatingRequest(null)
+      showToast(`Request ${ref} status updated to "${newStatus}" and remarks saved.`)
+    } catch (err) {
+      showToast(`Not saved: ${err.message}`)
+    }
   }
 
   const handleNavigate = (navKey) => {
@@ -150,6 +110,7 @@ function RegistrarDashboard({ initialView = 'dashboard', onLogout }) {
 
   return (
     <RegistrarLayout
+      user={user}
       activeNav={activeNav}
       onNavigate={handleNavigate}
       onLogout={onLogout}

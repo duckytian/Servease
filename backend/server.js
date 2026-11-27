@@ -9,6 +9,8 @@ app.use(express.json())
 app.use('/api/auth', require('./src/routes/auth'))
 app.use('/api/requests', require('./src/routes/requests'))
 app.use('/api/osas', require('./src/routes/osas'))
+app.use('/api/registrar', require('./src/routes/registrar'))
+app.use('/api/it', require('./src/routes/it'))
 app.get('/api/health', (_, res) => res.json({ ok: true }))
 
 app.listen(process.env.PORT || 5000, () =>

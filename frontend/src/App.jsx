@@ -21,8 +21,9 @@ const dashboards = {
 }
 
 function AppContent() {
-  const { user, isAuthenticated, signIn, signOut } = useAuth()
+  const { user, isAuthenticated, loading, signIn, signOut } = useAuth()
   const [authPage, setAuthPage] = useState('sign-in')
+  if (loading) return null
 
   if (isAuthenticated) {
     const Dashboard = dashboards[user?.role]

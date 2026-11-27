@@ -9,68 +9,22 @@ export const studentProfile = {
   contactNo: '09171234567',
 }
 
+// Spec-aligned service catalog (SERVEASE overview). Extras live in ./extras.js
 export const registrarServices = [
-  {
-    code: 'COE',
-    name: 'Certificate of Enrollment (COE)',
-    description: 'Official proof of enrollment for the current academic term.',
-  },
-  {
-    code: 'COG',
-    name: 'Certificate of Grades (COG)',
-    description: 'Certified copy of your grades for scholarships and requirements.',
-  },
-  {
-    code: 'COR',
-    name: 'Certificate of Registration (COR)',
-    description: 'Registration record for the academic year and semester.',
-  },
-  {
-    code: 'TOR',
-    name: 'Transcript of Records (TOR)',
-    description: 'Complete academic record for transfer, employment, or further study.',
-  },
-  {
-    code: 'GOOD MORAL',
-    name: 'Good Moral Certificate',
-    description: 'Certification of good character and student conduct.',
-  },
+  { code: 'COE', name: 'Certificate of Enrollment (COE)', description: 'Official proof of enrollment for the current academic term.' },
+  { code: 'COG', name: 'Certificate of Grades (COG)', description: 'Certified copy of your grades for scholarships and requirements.' },
+  { code: 'TOR', name: 'Transcript of Records (TOR)', description: 'Complete academic record for transfer, employment, or further study.' },
+  { code: 'GOOD MORAL', name: 'Good Moral Certificate', description: 'Certification of good character and student conduct.' },
 ]
 
 export const osasServices = [
-  {
-    code: 'STUDENT ID',
-    name: 'Student ID Replacement',
-    description: 'Request a replacement for a lost or damaged student ID.',
-  },
-  {
-    code: 'STATUS',
-    name: 'Certificate of Student Status',
-    description: 'Official confirmation of your enrollment status.',
-  },
-  {
-    code: 'CLEARANCE',
-    name: 'Organization Clearance',
-    description: 'Clearance for student organization activities and events.',
-  },
+  { code: 'LOST ID', name: 'Report Lost Student ID', description: 'Report a lost student ID and start the replacement process.' },
+  { code: 'STUDENT ID', name: 'Student ID Replacement', description: 'Request a replacement for a lost or damaged student ID.' },
 ]
 
 export const itServices = [
-  {
-    code: 'ACCOUNT',
-    name: 'Portal Account Reset',
-    description: 'Reset your ServEase portal password or recover access.',
-  },
-  {
-    code: 'WIFI',
-    name: 'Campus Wi-Fi Access',
-    description: 'Request access credentials for the campus network.',
-  },
-  {
-    code: 'WORKSTATION',
-    name: 'Lab Workstation Request',
-    description: 'Reserve a workstation for a lab session or project.',
-  },
+  { code: 'PORTAL', name: 'Student Portal Assistance', description: 'Assistance with student portal access and account issues.' },
+  { code: 'LAB', name: 'Computer Lab Request', description: 'Request access or resources for the computer lab.' },
 ]
 
 export const departmentServices = {

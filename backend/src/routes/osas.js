@@ -6,7 +6,7 @@ const q = require('../requestQuery')
 
 router.use(auth, requireRole('osas'))
 const STATUSES = ['Pending', 'Processing', 'Completed', 'Rejected']
-const STEP = { Completed: 'Service Fulfilled', Rejected: 'Request Declined', Processing: 'Request Under Review', Pending: 'Status Updated' }
+const STEP = { Completed: 'Completed', Rejected: 'Rejected', Processing: 'Under Review', Pending: 'Status Updated' }
 
 router.get('/summary', async (req, res) => {
   const [rows] = await db.query("SELECT status, COUNT(*) AS n FROM requests WHERE department = 'osas' GROUP BY status")

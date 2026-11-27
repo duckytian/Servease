@@ -21,10 +21,10 @@ function StudentTopbar({ user, showNotifications, onToggleNotifications, onClose
     <header className="sticky top-0 z-20 flex h-[72px] items-center justify-between border-b border-[#E7DFD0] bg-white/95 px-6 backdrop-blur-md max-[760px]:px-4">
       <div className="flex flex-col">
         <h1 className="font-display text-[19px] font-extrabold tracking-tight text-[#073B23] leading-tight sm:text-[21px]">
-          Welcome, {studentProfile.name}!
+          Welcome, {user?.name ?? studentProfile.name}!
         </h1>
         <p className="text-[12px] font-medium text-[#8A7344]">
-          Student ID: {studentId} &bull; {studentProfile.course} &bull; {studentProfile.yearLevel}
+          Student ID: {studentId} &bull; {user?.course ?? studentProfile.course} &bull; {user?.yearLevel ?? studentProfile.yearLevel}
         </p>
       </div>
 

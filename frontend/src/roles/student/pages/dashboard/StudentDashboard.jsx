@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createRequest, useRequests } from '../../../../data/requestStore.js'
+import { useMyRequests, submitRequest } from '../../../../data/requestsApi.js'
 import StudentLayout from '../../components/StudentLayout.jsx'
 import Confirmation from '../Confirmation.jsx'
 import MyRequests from '../MyRequests.jsx'
@@ -9,8 +9,11 @@ import { departmentServices, studentProfile } from '../data.js'
 import DashboardOverview from './DashboardOverview.jsx'
 import DepartmentServices from './DepartmentServices.jsx'
 
+const DEPT_SLUG = { Registrar: 'registrar', OSAS: 'osas', 'IT Department': 'it' }
+const DEPT_DISPLAY = { registrar: 'Registrar', osas: 'OSAS', it: 'IT Department' }
+
 function StudentDashboard({ user, onLogout }) {
-  const [requests] = useRequests()
+  const { requests: myRequests, reload: reloadRequests } = useMyRequests()
   const [activeSection, setActiveSection] = useState('dashboard')
   const [view, setView] = useState('list')
   const [selectedService, setSelectedService] = useState(null)
@@ -18,16 +21,25 @@ function StudentDashboard({ user, onLogout }) {
   const [selectedRequest, setSelectedRequest] = useState(null)
   const [showNotifications, setShowNotifications] = useState(false)
 
+
   const studentId = user?.userId ?? studentProfile.id
-  const ownRequests = requests.filter((request) => request.studentId === studentId)
-  const department = departmentServices[activeSection] ? activeSection : null
-  const services = department ? departmentServices[department] : []
+  const profile = {
+    name: user?.name ?? studentProfile.name,
+    course: user?.course ?? studentProfile.course,
+    yearLevel: user?.yearLevel ?? studentProfile.yearLevel,
+    email: user?.email ?? studentProfile.email,
+    contactNo: user?.contactNumber ?? studentProfile.contactNo,
+  }
+
+  const ownRequests = myRequests.map((r) => ({
+    ...r,
+    department: DEPT_DISPLAY[r.department] || r.department,
+  }))
 
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') setShowNotifications(false)
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
@@ -47,25 +59,25 @@ function StudentDashboard({ user, onLogout }) {
     setShowNotifications(false)
   }
 
-  const handleSubmitRequest = (values) => {
-    const submitted = createRequest({
-      studentId,
-      studentName: studentProfile.name,
-      course: studentProfile.course,
-      yearLevel: studentProfile.yearLevel,
-      email: studentProfile.email,
-      contactNo: studentProfile.contactNo,
-      department,
-      type: selectedService.name,
-      shortType: selectedService.code,
-      academicYear: values.academicYear,
-      semester: values.semester,
-      purpose: values.purpose,
-      additionalRemarks: values.additionalRemarks,
-    })
-
-    setSubmittedRequest(submitted)
-    setView('confirmation')
+  const handleSubmitRequest = async (values) => {
+    const departmentSlug = DEPT_SLUG[activeSection]
+    try {
+      const submitted = await submitRequest(departmentSlug, {
+        serviceId: null,
+        type: selectedService.name,
+        academicYear: values.academicYear,
+        semester: values.semester,
+        purpose: values.purpose,
+        additionalRemarks: values.additionalRemarks,
+        // student identity comes from the JWT on the backend
+      })
+      // attach display fields the backend already returns
+      setSubmittedRequest(submitted)
+      setView('confirmation')
+      await reloadRequests()
+    } catch (err) {
+      alert(err.message)
+    }
   }
 
   const handleOpenRequest = (request) => {
@@ -75,10 +87,7 @@ function StudentDashboard({ user, onLogout }) {
   }
 
   const headings = {
-    dashboard: [
-      `Welcome! ${studentProfile.name} | Student ID: ${studentId}`,
-      'Here is the latest activity across your submitted service requests.',
-    ],
+    dashboard: [`Welcome! ${profile.name} | Student ID: ${studentId}`, 'Here is the latest activity across your submitted service requests.'],
     'my-requests': ['My Requests', 'Track the status of your submitted service requests.'],
     details: ['Request Details', 'View the progress and registrar remarks for this request.'],
   }
@@ -91,6 +100,9 @@ function StudentDashboard({ user, onLogout }) {
           `${activeSection} Services`,
           'Select a service to start your request.',
         ]
+
+  const department = departmentServices[activeSection] ? activeSection : null
+  const services = department ? departmentServices[department] : []
 
   return (
     <StudentLayout
@@ -121,7 +133,7 @@ function StudentDashboard({ user, onLogout }) {
       {department && view === 'form' && selectedService && (
         <RequestForm
           service={selectedService}
-          profile={studentProfile}
+          profile={profile}
           studentId={studentId}
           onSubmit={handleSubmitRequest}
           onCancel={() => setView('list')}

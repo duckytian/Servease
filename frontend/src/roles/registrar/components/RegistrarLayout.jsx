@@ -2,6 +2,7 @@ import RegistrarSidebar from './RegistrarSidebar.jsx'
 import RegistrarTopbar from './RegistrarTopbar.jsx'
 
 function RegistrarLayout({
+  user,
   activeNav,
   onNavigate,
   onLogout,
@@ -27,6 +28,7 @@ function RegistrarLayout({
       {/* Main Content Area */}
       <div className="min-h-screen pl-[70px] transition-all duration-300 min-[901px]:pl-[230px]">
         <RegistrarTopbar
+          user={user}
           activeNav={activeNav}
           onNavigate={onNavigate}
           onOpenTechStackModal={onOpenTechStackModal}

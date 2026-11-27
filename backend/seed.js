@@ -6,6 +6,8 @@ const db = require('./src/db')
 ;(async () => {
   const users = [
     ['OSAS-001', 'OSAS Staff', 'osas@servease.edu', null, null, null, 'osas123', 'osas'],
+    ['REG-001', 'Registrar Staff', 'registrar@servease.edu', null, null, null, 'registrar123', 'registrar'],
+    ['IT-001', 'IT Staff', 'it@servease.edu', null, null, null, 'it1234', 'it'],
     ['2023-00001', 'Juan Dela Cruz', 'juan@email.com', '09171234567', 'BSIT', '3rd Year', 'student123', 'student'],
   ]
   for (const u of users) {
@@ -15,6 +17,6 @@ const db = require('./src/db')
        VALUES (?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash)`,
       [u[0], u[1], u[2], u[3], u[4], u[5], hash, u[7]])
   }
-  console.log('Done. OSAS-001 / osas123  |  2023-00001 / student123')
+  console.log('Done. OSAS-001 / osas123  |  REG-001 / registrar123  |  IT-001 / it1234  |  2023-00001 / student123')
   process.exit(0)
 })()
